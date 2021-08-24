@@ -20,6 +20,13 @@ class StageController extends Controller
         return view('stages/index', compact("stages"));
     }
 
+    function mine (string $email) {
+        $maitre = Maitre::where('email', '=', $email)->get();
+        $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
+
+        return view('stages/index', compact("stages"));
+    }
+
     // La vue ajouter
     public function ajouter(Demande $demande)
     {
@@ -108,17 +115,21 @@ class StageController extends Controller
     } */
 
     // La methode modifier
-    public function update(Request $request, Stage $stage, string $status)
+    public function update(Request $request, Stage $stage)
     {
+        $request->validate([
+            'observation' => 'required',
+        ]);
+        
 
-        $stage->statut = $status;
+        $stage->observation = $request->observation;
 
         //Modifier l'objet
         $stage->update([
             $stage->all()
         ]);
 
-        return back()->with("updateSuccess", "La stage a changé de status");
+        return back()->with("updateSuccess", "Le stage a changé de status");
     }
 
     public function Email(array $data)

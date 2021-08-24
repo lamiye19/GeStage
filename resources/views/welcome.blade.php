@@ -1,32 +1,31 @@
-<!DOCTYPE html>
-<html>
+@extends("layout.master")
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulaires</title>
+@section("titre")
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <link rel="stylesheet" href="{{mix("css/app.css")}}">
-  @livewireStyles
-
-</head>
-
-<body>
-
-  
-
-
-  <script src="{{mix('js/app.js')}}"></script>
-
-</body>
-
-</html>
-
-{{-- @extends("layout.master")
+@endsection
 
 @section("contenu")
-  <livewire:counter/>
-@endsection --}}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Dashboard</div>
+
+            <div class="card-body">
+                Vous êtes connecté en tant que <strong class="text-success">{{ Auth::user()->name }}</strong>
+
+                <p class="mt-3 d-flex justify-content-end">
+                    Déconnectez vous en cliquant ce &nbsp;
+                    <a class="" href="{{ route('logout') }}" onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+                        lien
+                    </a>
+                </p>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

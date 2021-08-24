@@ -51,6 +51,14 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $test = Maitre::where('email', '=', $data['email'])->get();
+        if (empty($test[0])) {
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'emailError' => ['required', 'string'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+            ]);
+        }
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -75,19 +83,4 @@ class RegisterController extends Controller
             ]);
         
     }
-
-    /* public function emailError(Request $data){
-        /* $data->validate([
-            'name' => 'require',
-            'email' => 'require',
-            'password' => 'require',
-        ]); 
-        $test = Maitre::where('email', '=', $data->email)->get();
-        if (empty($test[0])) {
-
-            return back()->with("emailError", "Veuillez utiliser votre email d'enregistrement");
-        } else {
-            return route('register');
-        }
-    } */
 }

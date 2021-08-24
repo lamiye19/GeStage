@@ -84,10 +84,9 @@ class DemandeController extends Controller
 
         $ask = Stagiaire::selectRaw('MAX(id) as id')->get();
 
-        $ask = $ask[0];
         
         Demande::create([
-            "stagiaire_id" => $ask->id,
+            "stagiaire_id" => $ask[0]->id,
             "specialite" => $request->specialite,
             "expDate1" => $request->expDate1,
             "expTitre1" => $request->expTitre1,
@@ -118,7 +117,7 @@ class DemandeController extends Controller
     }
 
     // La methode modifier
-    public function update (Demande $demande, string $statut) {
+    public function update (Request $request, Demande $demande, string $statut) {
 
         $demande->statut = $statut;
         if($statut == 'refus'){
@@ -134,27 +133,40 @@ class DemandeController extends Controller
                     <p>Nous vous souhaitons une pleine réussite dans vos recherches futures.</p>'
             ];
             $this->Email($leMail);
+
+            //Modifier l'objet
+            $demande->update([
+                $demande->all()
+            ]);
+    
+            return back()->with("updateSuccess", "La demande a été refusé");
         }
         elseif($statut == 'attente') {
+            $request->validate([
+                'date' => 'required',
+                'heure' => 'required',
+            ]);
+
             $leMail = [
                 'name' => $demande->stagiaire->nom . ' '.$demande->stagiaire->prenom,
                 'email' => $demande->stagiaire->email,
                 'subject' => "Convocation à un entretien",
                 'message' => '<p>Votre candidature au poste de ('. $demande->specialite .') au sein de notre société a 
                     retenu notre attention et nous souhaiterons vous rencontrer. Nous vous proposons un entretien 
-                    avec le directeur des ressources humaines le '.' à '. ' dans nos locaux.</p>'.
+                    avec le directeur des ressources humaines le <strong>'. date('d/m/Y', strtotime($request->date)).
+                    '</strong> à <strong>'. $request->heure .'</strong> dans nos locaux.</p>'.
                     '<p>Nous vous prions de bien vouloir nous confirmer votre présence à ce rendez-vous par email 
-                    <a href="mailto:omolola0119@gmail.com">omolola0119@gmail.com</a></p>'
+                    <a href="mailto:gestage.dev@gmail.com">gestage.dev@gmail.com</a></p>'
             ];
             $this->Email($leMail);
+            //Modifier l'objet
+            $demande->update([
+                $demande->all()
+            ]);
+    
+            return back()->with("updateSuccess", "La demande a changé de status");
         }
 
-        //Modifier l'objet
-        $demande->update([
-            $demande->all()
-        ]);
-
-        return back()->with("updateSuccess", "La demande a changé de status");
     }
 
     public function Email(array $data)

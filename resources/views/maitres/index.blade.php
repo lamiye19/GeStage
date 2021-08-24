@@ -24,6 +24,11 @@ Liste des maitres
             </a>
         </div>
     </div>
+    @if(session()->has("deleteSuccess"))
+    <div class="text-center alert-success py-1 h4">
+        {{Session()->get("deleteSuccess")}}
+    </div>
+    @endif
     <!-- /.card-header -->
     <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
         <table class="table table-head-fixed text-nowrap">
@@ -67,16 +72,6 @@ Liste des maitres
                 @endforeach
             </tbody>
         </table>
-        <div>
-            @foreach ($errors->all() as $err)
-                {{$err}}
-            @endforeach
-        </div>
-        <div class="text-center text-success">
-            @if (Session()->has("deleteSuccess"))
-            {{Session()->get("deleteSuccess")}}
-            @endif
-        </div>
     </div>
     <!-- /.card-body -->
 </div>

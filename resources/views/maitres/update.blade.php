@@ -9,11 +9,16 @@ Modifier un maitre de stage
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <div class="card">
+            @if (Session()->has("updateSuccess"))
+            <div class="text-center alert-success my-3 h4">
+                {{Session()->get("updateSuccess")}}
+            </div>
+            @endif
             <form method='post' action="{{route('maitre.update', ['maitre'=>$maitre->id])}}">
                 @csrf
-        
+
                 <input type="hidden" name="_method" value="put">
-        
+
                 <div class="card-body">
                     <div class="form-group">
                         <label for="">Nom</label>
@@ -54,11 +59,6 @@ Modifier un maitre de stage
                         <input type="text" class="form-control" value="{{$maitre->poste}}" name="poste" placeholder="">
                     </div>
                     @csrf
-                    <div class="text-center text-success">
-                        @if (Session()->has("updateSuccess"))
-                        {{Session()->get("updateSuccess")}}
-                        @endif
-                    </div>
                 </div>
                 <!-- /.card-body -->
 

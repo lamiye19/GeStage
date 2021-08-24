@@ -24,75 +24,72 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-//Route::post('/register', [RegisterController::class, "emailError"])->name("emailError");
-
-
 Route::get('/', [DemandeController::class, "ajouter"])->name("ajouter-demande");
 Route::post('/', [DemandeController::class, "create"])->name("demande.create");
 
-Route::prefix('admin')->group(function () {
+Auth::routes();
 
-    Route::get('', function () {
-        return view('layout/master');
-    })->name("admin");
 
-    //Routes Service
-    Route::prefix('services')->group(function () {
-        Route::get('', [ServiceController::class, "index"])->name("services");
-        Route::get('/create', [ServiceController::class, "ajouter"])->name("ajouter-service");
-        Route::post('/create', [ServiceController::class, "create"])->name("service.create");
-        Route::delete('/delete/{service}', [ServiceController::class, "delete"])->name("service.delete");
-        Route::put('/update/{service}', [ServiceController::class, "update"])->name("service.update");
-        Route::get('/update/{service}', [ServiceController::class, "modifier"])->name("modifier-service");
-    });
-
-    //Routes Maitre
-    Route::prefix('maitres')->group(function () {
-        Route::get('', [MaitreController::class, "index"])->name("maitres");
-        Route::get('/create', [MaitreController::class, "ajouter"])->name("ajouter-maitre");
-        Route::post('/create', [MaitreController::class, "create"])->name("maitre.create");
-        Route::delete('/delete/{maitre}', [MaitreController::class, "delete"])->name("maitre.delete");
-        Route::put('/update/{maitre}', [MaitreController::class, "update"])->name("maitre.update");
-        Route::get('/update/{maitre}', [MaitreController::class, "modifier"])->name("modifier-maitre");
-    });
-
-    //Routes demande
-    Route::prefix('demandes')->group(function () {
-        Route::get('', [DemandeController::class, "index"])->name("demandes");
-        Route::put('/update/{demande}/{status}', [DemandeController::class, "update"])->name("demande.update");
-        Route::get('/consulter/{demande}', [DemandeController::class, "consulter"])->name("consulter-demande");
-        Route::get('/accept/{demande}', [StageController::class, "ajouter"])->name("accept-demande");
-        Route::post('/accept', [StageController::class, "create"])->name("stage.create");
-    });
-
-    //Routes stagiaire
-    Route::prefix('stagiaires')->group(function () {
-        Route::get('', [StagiaireController::class, "index"])->name("stagiaires");
-    });
-
-    //Routes stage
-    Route::prefix('stages')->group(function () {
-        Route::get('', [StageController::class, "index"])->name("stages");
+Route::prefix('user-connect')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     });
 });
+    Route::middleware('auth')->group(function () {
+        Route::prefix('admin')->group(function () {
 
+            Route::get('', function () {
+                return view('welcome');
+            })->name("admin");
+
+            //Routes Service
+            Route::prefix('services')->group(function () {
+                Route::get('', [ServiceController::class, "index"])->name("services");
+                Route::get('/create', [ServiceController::class, "ajouter"])->name("ajouter-service");
+                Route::post('/create', [ServiceController::class, "create"])->name("service.create");
+                Route::delete('/delete/{service}', [ServiceController::class, "delete"])->name("service.delete");
+                Route::put('/update/{service}', [ServiceController::class, "update"])->name("service.update");
+                Route::get('/update/{service}', [ServiceController::class, "modifier"])->name("modifier-service");
+            });
+
+            //Routes Maitre
+            Route::prefix('maitres')->group(function () {
+                Route::get('', [MaitreController::class, "index"])->name("maitres");
+                Route::get('/create', [MaitreController::class, "ajouter"])->name("ajouter-maitre");
+                Route::post('/create', [MaitreController::class, "create"])->name("maitre.create");
+                Route::delete('/delete/{maitre}', [MaitreController::class, "delete"])->name("maitre.delete");
+                Route::put('/update/{maitre}', [MaitreController::class, "update"])->name("maitre.update");
+                Route::get('/update/{maitre}', [MaitreController::class, "modifier"])->name("modifier-maitre");
+            });
+
+            //Routes demande
+            Route::prefix('demandes')->group(function () {
+                Route::get('', [DemandeController::class, "index"])->name("demandes");
+                Route::put('/update/{demande}/{status}', [DemandeController::class, "update"])->name("demande.update");
+                Route::get('/consulter/{demande}', [DemandeController::class, "consulter"])->name("consulter-demande");
+                Route::get('/accept/{demande}', [StageController::class, "ajouter"])->name("accept-demande");
+                Route::post('/accept', [StageController::class, "create"])->name("stage.create");
+            });
+
+            //Routes stagiaire
+            Route::prefix('stagiaires')->group(function () {
+                Route::get('', [StagiaireController::class, "index"])->name("stagiaires");
+                Route::get('/my/{email}', [StagiaireController::class, "mine"])->name("mes-stagiaires");
+            });
+
+            //Routes stage
+            Route::prefix('stages')->group(function () {
+                Route::get('', [StageController::class, "index"])->name("stages");
+                Route::put('/update/{stage}', [StageController::class, "update"])->name("stage.update");
+                Route::get('/my/{email}', [StageController::class, "mine"])->name("mes-stages");
+            });
+        });
+    });
 
 
 /* Route::get('/admin/send-email', [StageController::class, "Email"])->name("send");
 
- Route::prefix('user')->group(function () {
-    Route::middleware('guest')->group(function () {
-        Route::view('/connexion','auth.login')->name('login');
-        Route::view('/registe','auth.register')->name('register');
-    });
-
-    Route::middleware('auth')->group(function () {
-        Route::view('/home','auth.login')->name('home');
-    });
+ 
 });  */
 
 //Routes stagiaire

@@ -9,6 +9,11 @@ Ajouter un maitre de stage
   <div class="col-md-2"></div>
   <div class="col-md-8">
     <div class="card">
+      @if (Session()->has("createSuccess"))
+      <div class="text-center alert-success my-3 h4">
+        {{Session()->get("createSuccess")}}
+      </div>
+      @endif
       <form method='post' action="{{route('maitre.create')}}">
         <div class="card-body">
           <div class="form-group">
@@ -46,11 +51,8 @@ Ajouter un maitre de stage
           </div>
 
           @csrf
-          <div class="text-center text-success">
-            @if (Session()->has("createSuccess"))
-            {{Session()->get("createSuccess")}}
-            @endif
-          </div>
+
+
         </div>
         <!-- /.card-body -->
 

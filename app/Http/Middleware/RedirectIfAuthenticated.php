@@ -26,13 +26,6 @@ class RedirectIfAuthenticated
                 return redirect(RouteServiceProvider::HOME);
             }
         }
-        /* if (Session()->has("emailError")) {
-
-            return report('emailError'); /* response()->json([
-                'name' => 'emailError',
-                'state' => "Veuillez utiliser votre email d'enregistrement",
-            ]); 
-        } else {} */
 
             return $next($request);
         

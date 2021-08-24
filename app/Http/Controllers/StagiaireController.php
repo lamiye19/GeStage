@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Demande;
+use App\Models\Maitre;
+use App\Models\Stage;
 use App\Models\Stagiaire;
 use Illuminate\Http\Request;
 
@@ -12,6 +14,19 @@ class StagiaireController extends Controller
 
         $demandes = Demande::where('statut', '=', 'accept')->get();
 
+        return view('stagiaires/index', compact("demandes"));
+    }
+
+    function mine (string $email) {
+        $maitre = Maitre::where('email', '=', $email)->get();
+        $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
+        $demandes = [];
+        $i = 0;
+        foreach($stages as $stage){
+            $demandes[$i] = $stage->demande;
+            $i++;
+        }
+        
         return view('stagiaires/index', compact("demandes"));
     }
 

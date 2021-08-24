@@ -7,20 +7,20 @@ Informations du stage
 @section("contenu")
 <div class="row">
   <div class="col-md-2">
-      @foreach ($errors->all() as $err)
-          {{ $err }} <br>
-      @endforeach
+    @foreach ($errors->all() as $err)
+    {{ $err }} <br>
+    @endforeach
   </div>
   <div class="col-md-8">
     <div class="card">
       <form method='post' action="{{route('stage.create')}}">
         <div class="card-body">
-            @csrf
-          <div class="text-center text-success">
-            @if (Session()->has("createSuccess"))
+          @csrf
+          @if (Session()->has("createSuccess"))
+          <div class="text-center alert-success my-3 h4">
             {{Session()->get("createSuccess")}}
-            @endif
           </div>
+          @endif
           <div class="form-group">
             <label for="">Titre</label>
             <input type="text" class="form-control" id="" name="titreStage" value="{{ $demande->titre }}">

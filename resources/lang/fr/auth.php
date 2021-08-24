@@ -20,6 +20,5 @@ return [
     'failed' => 'L\'email ou le mot de passe n\'est pas correct',
     'password' => 'L\'email ou le mot de passe n\'est pas correct',
     'throttle' => 'Trop de tentatives de connexion. Veuillez réessayer dans :seconds secondes.',
-    'emailError' => "Veuillez utiliser votre email d'enregistrement",
 
 ];

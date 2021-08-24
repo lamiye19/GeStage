@@ -17,8 +17,5 @@ class Authenticate extends Middleware
         if (! $request->expectsJson()) {
             return route('login');
         }
-        /* else{
-            return redirect('register')->withErrors("emailError", "Veuillez utiliser votre email d'enregistrement");
-        } */
     }
 }

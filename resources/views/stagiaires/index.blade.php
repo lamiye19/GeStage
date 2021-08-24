@@ -26,10 +26,10 @@ Liste des stagiaires
     </div>
     <!-- /.card-header -->
     <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
-        <table class="table table-head-fixed text-nowrap">
+        <table class="table table-head-fixed text-nowrap text-center">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th></th>
                     <th>Nom et Prénoms</th>
                     <th>Sexe</th>
                     <th>Téléphone</th>
@@ -37,18 +37,22 @@ Liste des stagiaires
                     <th>Date de Naissance</th>
                     <th>Ecole</th>
                     <th>Adresse</th>
-                    {{-- <th>Action</th> --}}
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($demandes as $demande)
                 <tr>
-                    <td>{{ $loop->index + 1 }}</td>
+                    <td>
+                        <img class="img-sm img-circle bg-white"
+                            src="/users-icons/{{$demande->stagiaire->sexe}}.jpeg"
+                            alt="Icone">
+                    </td>
                     <td>{{ $demande->stagiaire->nom }} {{ $demande->stagiaire->prenom }}</td>
                     <td>{{ $demande->stagiaire->sexe }}</td>
                     <td>{{ $demande->stagiaire->tel }}</td>
                     <td>{{ $demande->stagiaire->email }}</td>
-                    <td>{{ $demande->stagiaire->dateNais }}</td>
+                    <td>{{ date('d - m - Y', strtotime($demande->stagiaire->dateNais))}}</td>
                     <td>{{ $demande->stagiaire->adr }}</td>
                     <td>{{ $demande->stagiaire->ecole }}</td>
                     <th>

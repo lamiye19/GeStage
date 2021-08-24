@@ -9,6 +9,12 @@ Modifier un service
   <div class="col-md-2"></div>
   <div class="col-md-8">
     <div class="card">
+
+      @if (Session()->has("updateSuccess"))
+      <div class="text-center alert-success my-3 h4">
+        {{Session()->get("updateSuccess")}}
+      </div>
+      @endif
       <form method='post' action="{{route('service.update', ['service'=>$service->id])}}">
         @csrf
 
@@ -24,11 +30,6 @@ Modifier un service
             <input type="text" class="form-control" id="" name="directeur" value="{{ $service->directeur }}" required>
           </div>
           @csrf
-          <div class="text-center text-success">
-            @if (Session()->has("updateSuccess"))
-            {{Session()->get("updateSuccess")}}
-            @endif
-          </div>
         </div>
         <div class="card-footer text-center">
           <div class="col-12">

@@ -168,5 +168,8 @@ return [
         'directeur' => [
             'required' => 'Le champs directeur est obligatoire',
         ],
-    ],
+        'emailError' => [
+            'required' => "Veuillez utiliser votre email d'enregistrement en tant que maître de stage",
+        ],
+],
 ];
