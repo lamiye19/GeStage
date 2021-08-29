@@ -5,22 +5,29 @@ Informations du stage
 @endsection
 
 @section("contenu")
-<div class="row">
-  <div class="col-md-2">
-    @foreach ($errors->all() as $err)
-    {{ $err }} <br>
-    @endforeach
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">  
+  @if (Session()->has("createSuccess"))
+  <div class="card col-md-4">
+    <div class="card-header d-flex justify-content-arround">
+      <strong class="mr-auto text-success">Création</strong>
+      <small class="text-end"> {{ date('h:m:s') }} </small>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body m-0">
+      {{Session()->get("createSuccess")}}
+    </div>
   </div>
-  <div class="col-md-8">
-    <div class="card">
+  @endif
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="card col-md-8">
       <form method='post' action="{{route('stage.create')}}">
         <div class="card-body">
           @csrf
-          @if (Session()->has("createSuccess"))
-          <div class="text-center alert-success my-3 h4">
-            {{Session()->get("createSuccess")}}
-          </div>
-          @endif
+          
           <div class="form-group">
             <label for="">Titre</label>
             <input type="text" class="form-control" id="" name="titreStage" value="{{ $demande->titre }}">
@@ -71,7 +78,6 @@ Informations du stage
           </div>
         </div>
       </form>
-    </div>
     <!-- /.card -->
   </div>
 </div>

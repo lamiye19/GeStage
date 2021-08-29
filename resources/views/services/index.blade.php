@@ -5,6 +5,23 @@ Liste des services
 @endsection
 
 @section("contenu")
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">
+  @if(session()->has("deleteSuccess"))
+  <div class="card col-md-5">
+      <div class="card-header d-flex justify-content-arround">
+          <strong class="mr-auto text-danger">Suppression</strong>
+          <small class="text-end"> {{ date('h:m:s') }} </small>
+          <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+              </button>
+          </div>
+      </div>
+      <div class="card-body m-0">
+          {{Session()->get("deleteSuccess")}}
+      </div>
+  </div>
+  @endif
+</div>
 <div class="card">
   <div class="card-header">
     <div class="row justify-content-between d-flex">
@@ -43,7 +60,7 @@ Liste des services
           <td>{{ $service->directeur }}</td>
           <th>
             <a href="{{ route('service.update', ['service'=>$service->id]) }} "><i class="far fa-edit"></i></a>
-            <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce service?')){
+            <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce service? Les informations liés aux stages seront supprimées avec.')){
               document.getElementById('form-{{$service->id}}').submit()}">
               <i class="far fa-trash-alt text-danger"></i>
             </a>
@@ -59,11 +76,6 @@ Liste des services
 
       {{ $services->links() }}
     </table>
-    <div class="text-center text-success">
-      @if (Session()->has("deleteSuccess"))
-      {{Session()->get("deleteSuccess")}}
-      @endif
-    </div>
   </div>
   <!-- /.card-body -->
 </div>

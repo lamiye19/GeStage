@@ -6,24 +6,48 @@ Ajouter un service
 
 @section("contenu")
 
-<div class="row">
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <div class="card">
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">  
+  @if (Session()->has("createSuccess"))
+  <div class="card col-md-4">
+    <div class="card-header d-flex justify-content-arround">
+      <strong class="mr-auto text-success">Création</strong>
+      <small class="text-end"> {{ date('h:m:s') }} </small>
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body m-0">
+      {{Session()->get("createSuccess")}}
+    </div>
+  </div>
+  @endif
+</div>
+<div class="row d-flex justify-content-center">
+    <div class="card col-md-8">
       <form method='post' action="{{route('service.create')}}">
         <div class="card-body">
-          @if (Session()->has("createSuccess"))
-          <div class="text-center alert-success my-3 h4">
-            {{Session()->get("createSuccess")}}
-          </div>
-          @endif
           <div class="form-group">
             <label for="exampleInputEmail1">Libellé</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-tag"></i>
+                </span>
+              </div>
             <input type="text" class="form-control" id="" name="lib" placeholder="" required>
+            </div>
           </div>
           <div class="form-group">
             <label for="exampleInputEmail1">Directeur</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-user-tie"></i>
+                </span>
+              </div>
             <input type="text" class="form-control" id="" name="directeur" placeholder="" required>
+            </div>
           </div>
           @csrf
         </div>

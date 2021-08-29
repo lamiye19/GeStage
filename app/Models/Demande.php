@@ -18,4 +18,12 @@ class Demande extends Model
     public function stagiaire(){
         return $this->belongsTo(Stagiaire::class);
     }
+
+    public function stage(){
+        return $this->hasMany(Stage::class);
+    }
+
+    public function renouveller(){
+        return $this->hasMany(Renouveller::class);
+    }
 }

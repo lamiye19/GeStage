@@ -26,7 +26,7 @@
           <a class="nav-link btn" href="/" role="button">Demande de stage</a>
         </li>
         <li>
-          <a class="nav-link btn" href="#" role="button">Soumettre rapport de stage</a>
+          <a class="nav-link btn" href="{{ route('rendu-stage') }}" role="button">Soumettre rapport de stage</a>
         </li>
       </ul>
     </nav>

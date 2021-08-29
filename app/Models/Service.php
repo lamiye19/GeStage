@@ -13,8 +13,8 @@ class Service extends Model
 
     protected $fillable = ["lib", "directeur"];
 
-    /* public function maitre(){
-        return $this->hasMany(Maitre::class);
-    } */
+    public function stage(){
+        return $this->hasMany(Stage::class);
+    }
 
 }

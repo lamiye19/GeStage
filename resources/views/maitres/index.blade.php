@@ -5,7 +5,25 @@ Liste des maitres
 @endsection
 
 @section("contenu")
-<div class="card">
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">
+    @if(session()->has("deleteSuccess"))
+    <div class="card col-md-5">
+        <div class="card-header d-flex justify-content-arround">
+            <strong class="mr-auto text-danger">Suppression</strong>
+            <small class="text-end"> {{ date('h:m:s') }} </small>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body m-0">
+            {{Session()->get("deleteSuccess")}}
+        </div>
+    </div>
+    @endif
+</div>
+
+<div class="card ">
     <div class="card-header">
         <div class="row justify-content-between d-flex">
             <div class="card-tools">
@@ -24,13 +42,74 @@ Liste des maitres
             </a>
         </div>
     </div>
-    @if(session()->has("deleteSuccess"))
-    <div class="text-center alert-success py-1 h4">
-        {{Session()->get("deleteSuccess")}}
+    <div class="card card-solid mb-1">
+        <div class="card-body pb-0">
+            <div class="row">
+                @foreach ($maitres as $maitre)
+                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                    <div class="card bg-light d-flex flex-fill">
+                        <div class="card-header text-muted text-green border-bottom-0">
+                            {{ $maitre->poste }}
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="lead"><b>{{ $maitre->nom }} {{ $maitre->prenom }}</b></h2>
+                                    <p class="text-muted text-sm">
+                                        <b>Date de naissance: </b> {{ date('d/m/Y', strtotime($maitre->dateNais))}}
+                                    </p>
+                                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                                        <li class="small">
+                                            <span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
+                                            Adresse: {{ $maitre->adr }}
+                                        </li>
+                                        <li class="small mt-1">
+                                            <span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                                            Téléphone: {{ $maitre->tel }}
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-5 text-center">
+                                    <img src="/users-icons/{{$maitre->sexe}}.jpeg" alt="avatar"
+                                        class="img-circle img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="text-right">
+                                <a href="tel:{{ $maitre->tel }}" class="btn btn-sm bg-teal">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="mailto:{{ $maitre->email }}" class="btn btn-sm bg-teal">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="{{ route('maitre.update', ['maitre'=>$maitre->id]) }}"
+                                    class="btn btn-sm btn-primary">
+                                    <i class="far fa-edit"></i> Modifier
+                                </a>
+                                <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce maitre?')){
+                                document.getElementById('form-{{$maitre->id}}').submit()}"
+                                    class="btn btn-sm btn-danger">
+                                    <i class="far fa-trash-alt"></i>
+                                </a>
+                                <form id="form-{{$maitre->id}}"
+                                    action="{{route('maitre.delete', ['maitre'=>$maitre->id])}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="_method" value="delete">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
     </div>
-    @endif
-    <!-- /.card-header -->
-    <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
+</div>
+
+
+{{-- Utiliser un tableau --}}
+{{-- <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
         <table class="table table-head-fixed text-nowrap">
             <thead>
                 <tr>
@@ -49,31 +128,30 @@ Liste des maitres
                 @foreach ($maitres as $maitre)
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
-                    <td>{{ $maitre->nom }} {{ $maitre->prenom }}</td>
-                    <td>{{ $maitre->sexe }}</td>
-                    <td>{{ $maitre->tel }}</td>
-                    <td>{{ $maitre->email }}</td>
-                    <td>{{ $maitre->poste }}</td>
-                    <td>{{ $maitre->dateNais }}</td>
-                    <td>{{ $maitre->adr }}</td>
-                    <th>
-                        <a href="{{ route('maitre.update', ['maitre'=>$maitre->id]) }} "><i class="far fa-edit"></i></a>
-                        <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce maitre?')){
+<td>{{ $maitre->nom }} {{ $maitre->prenom }}</td>
+<td>{{ $maitre->sexe }}</td>
+<td>{{ $maitre->tel }}</td>
+<td>{{ $m    @endif
+aitre->email }}</td>
+<td>{{ $maitre->poste }}</td>
+<td>{{ date('d/m/Y', strtotime($maitre->dateNais))}}</td>
+<td>{{ $maitre->adr }}</td>
+<th>
+    <a href="{{ route('maitre.update', ['maitre'=>$maitre->id]) }} "><i class="far fa-edit"></i></a>
+    <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce maitre?')){
                             document.getElementById('form-{{$maitre->id}}').submit()}">
-                            <i class="far fa-trash-alt text-danger"></i>
-                        </a>
-                        <form id="form-{{$maitre->id}}" action="{{route('maitre.delete', ['maitre'=>$maitre->id])}}"
-                            method="post">
-                            @csrf
-                            <input type="hidden" name="_method" value="delete">
-                        </form>
-                    </th>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <!-- /.card-body -->
-</div>
+        <i class="far fa-trash-alt text-danger"></i>
+    </a>
+    <form id="form-{{$maitre->id}}" action="{{route('maitre.delete', ['maitre'=>$maitre->id])}}" method="post">
+        @csrf
+        <input type="hidden" name="_method" value="delete">
+    </form>
+</th>
+</tr>
+@endforeach
+</tbody>
+</table>
+</div> --}}
+
 <!-- /.card -->
 @endsection

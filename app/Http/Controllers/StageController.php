@@ -7,6 +7,8 @@ use App\Models\Demande;
 use App\Models\Maitre;
 use App\Models\Service;
 use App\Models\Stage;
+use App\Models\Stagiaire;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -20,8 +22,9 @@ class StageController extends Controller
         return view('stages/index', compact("stages"));
     }
 
-    function mine (string $email) {
-        $maitre = Maitre::where('email', '=', $email)->get();
+    function mine (User $user) {
+        $maitre = Maitre::where('email', '=', $user->email)->get();
+        //dd($maitre);
         $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
 
         return view('stages/index', compact("stages"));
@@ -35,6 +38,15 @@ class StageController extends Controller
         $services = Service::all();
 
         return view('demandes/accept', compact("demande", "maitres", "services"));
+    }
+
+    // La vue pour soumettre le document
+    public function renduDoc()
+    {
+        $maitres = Maitre::all();
+        $services = Service::all();
+
+        return view('stages.rendu', compact("maitres", "services"));
     }
 
 
@@ -68,7 +80,7 @@ class StageController extends Controller
             'name' => $stage->demande->stagiaire->nom . ' '.$stage->demande->stagiaire->prenom,
             'email' => $stage->demande->stagiaire->email,
             'subject' => "Confirmation de stage",
-            'message' => '<p>Votre demande de stage à Pal Service en tant que "' . $stage->demande->titreStage . '" été acceptée. </p>
+            'message' => '<p>Votre demande de stage à Pal Service en tant que "' . $stage->demande->specialite . '" été acceptée. </p>
                 <p>Voici les informations par rapports à votre stage:</p>
                 <ul>
                     <li> Poste : ' . $stage->titreStage . '</li>
@@ -89,6 +101,7 @@ class StageController extends Controller
                 </ul>'
         ];
 
+            $this->Email($leMail);
         if(Stage::create([
             "titreStage" => $request->titreStage,
             "theme" => $request->theme,
@@ -98,22 +111,12 @@ class StageController extends Controller
             "fin" => $request->fin,
             "service_id" => $request->service_id
         ])){
-            $this->Email($leMail);
-            $demande = Demande::where('id', '=', $request->demande_id)->get();
-            app('App\Http\Controllers\DemandeController')->update($demande[0], "accept");
+            $demande = Demande::find($request->demande_id);
+            $demande->statut = 'accept';
+            $demande->update();
         }
         return back()->with("createSuccess", "Le stage est ajoutée avec succèss");
     }
-
-    // La methode supprimer
-    /* public function delete (stage $stage) {
-
-        //Chercher et supprimer le stage
-        $stage->delete();
-
-        return back()->with("deleteSuccess", "Le stage '$stage->lib' est supprimé avec succèss");
-    } */
-
     // La methode modifier
     public function update(Request $request, Stage $stage)
     {
@@ -129,7 +132,51 @@ class StageController extends Controller
             $stage->all()
         ]);
 
-        return back()->with("updateSuccess", "Le stage a changé de status");
+        return back()->with("updateSuccess", "Le stage a été noté");
+    }
+
+    // La methode modifier
+    public function verification(Request $request)
+    {
+       $request->validate([
+            "email" => "required",
+            "service_id" => "required",
+            "maitre_id" => "required"
+        ]);
+        
+
+        $stagiaire = Stagiaire::where('email', '=', $request->email)->first();
+        $demande = Demande::where('stagiaire_id', '=', $stagiaire->id)->first();
+        $stage = Stage::all();
+        $stage = $stage->where('maitre_id', '=', $request->maitre_id)->where('service_id',$request->service_id)
+                ->where('demande_id', '=', $demande->id)->first();
+       
+        if($stage == null){
+            return back()->with("stageFalse", "Les informations entrées ne correspondent pas aux enregistrements.");
+        }
+        else{
+
+            return view('stages.rendu', compact("stage"));
+        }
+    }
+
+
+    public function rendre(Request $request)
+    {
+       $request->validate([
+            "renduDoc" => "required",
+        ]);
+
+        $file = $request->file('renduDoc');
+
+        $path = $file->store('rapports', 'public');
+        $stage = Stage::find($request->stage);
+        $stage->renduDoc = $path;
+        $stage->etat = true;
+
+        $stage->update();
+        
+        return back()->with("updateSuccess", "Rapport enregistré");
     }
 
     public function Email(array $data)
@@ -140,4 +187,21 @@ class StageController extends Controller
 
         return view('demandes.index');
     }
+
+    // La methode supprimer
+    /* public function delete (stage $stage) {
+
+        //Chercher et supprimer le stage
+        $stage->delete();
+
+        return back()->with("deleteSuccess", "Le stage '$stage->lib' est supprimé avec succèss");
+    } */
+
+    /* RENOUVELLER
+        $stag = Demande::find(1);
+        //$stage = $stage->whereIn('hobbies', "sport")->first();
+        $stage->statut = null;
+        Demande::create($stage->toArray());
+    */
+
 }

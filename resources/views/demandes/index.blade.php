@@ -5,6 +5,25 @@ Liste des demandes
 @endsection
 
 @section("contenu")
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">
+  @if(session()->has("updateSuccess"))
+  <div class="card col-md-5">
+      <div class="card-header d-flex justify-content-arround">
+          <strong class="mr-auto text-warning">Modification</strong>
+          <small class="text-end"> {{ date('h:m:s') }} </small>
+          <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+              </button>
+          </div>
+      </div>
+      <div class="card-body m-0">
+          {{Session()->get("updateSuccess")}}
+      </div>
+  </div>
+  @endif
+</div>
+
+
 <div class="card-header">
   {{-- <div class="row justify-content-between d-flex">
     <div class="card-tools">
@@ -24,38 +43,32 @@ Liste des demandes
 </div> --}}
 </div>
 <!-- /.card-header -->
-@if(session()->has("deleteSuccess"))
-<div class="text-center alert-success my-3 h4">
-  {{Session()->get("deleteSuccess")}}
-</div>
-@endif
 
-    @if (Session()->has("updateSuccess"))
-    <div class="text-center alert-success my-3 h4">
-      {{Session()->get("updateSuccess")}}
-    </div>
-    @endif
-
-<!-- /.card-body -->
 <div class="card card-primary card-outline card-outline-tabs">
   <div class="card-header p-0 border-bottom-0">
     <ul class="nav nav-tabs" id="myTab" role="tablist" style="font-size: 1em;">
       <li class="nav-item">
         <a class="nav-link font-weight-bold active" id="nouvelles-tab" data-toggle="pill" href="#nouvelles" role="tab"
           aria-controls="nouvelles" aria-selected="true">
-          Nouvelles <i class="fa fa-star text-dark"></i>
+          Nouvelles ({{ count($demandes->whereNull('statut')) }}) <i class="fa fa-star text-dark"></i>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link font-weight-bold" id="traitees-tab" data-toggle="pill" href="#traitees" role="tab"
           aria-controls="traitees" aria-selected="false">
-          Traitées <i class="fa fa-star text-warning"></i>
+          Traitées ({{ count($demandes->whereNotNull('statut')) }}) <i class="fa fa-star text-warning"></i>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link font-weight-bold" id="accept-tab" data-toggle="pill" href="#accept" role="tab"
           aria-controls="accept" aria-selected="false">
-          Accepté <i class="fa fa-check-double text-success"></i>
+          Accepté ({{ count($demandes->where('statut', 'accept')) }}) <i class="fa fa-check-double text-success"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" id="renew-tab" data-toggle="pill" href="#renew" role="tab"
+          aria-controls="renew" aria-selected="false">
+          Renouvellées ({{ count($demandes->where('statut', 'accept')) }}) <i class="fa fa-camera-retro text-success"></i>
         </a>
       </li>
     </ul>
@@ -64,7 +77,7 @@ Liste des demandes
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="nouvelles" role="tabpanel" aria-labelledby="nouvelles-tab">
         <div class="table-hover table-responsive p-0">
-          <table class="table table-striped table-borderless">
+          <table class="table table-striped table-borderless text-nowrap">
             <thead class="border-bottom">
               <tr>
                 <th>#</th>
@@ -75,16 +88,16 @@ Liste des demandes
               </tr>
             </thead>
             <tbody>
-              @foreach ($demandes as $demande)
               @php
               $i = 0;
               @endphp
-              @if ($demande->statut == null)
+              @foreach ($demandes->whereNull('statut') as $demande)
+              
               @php
               $i++;
               @endphp
               <tr>
-                <td>{{ $i }}</td>
+                <td>{{ $loop->index +1 }}</td>
                 <td>{{ $demande->stagiaire->nom }} {{ $demande->stagiaire->prenom }}</td>
                 <td>{{ $demande->specialite }}</td>
                 <td>{{ $demande->created_at }}</td>
@@ -94,7 +107,6 @@ Liste des demandes
                   @include('demandes.responseLink')
                 </th>
               </tr>
-              @endif
               @endforeach
             </tbody>
           </table>
@@ -103,7 +115,7 @@ Liste des demandes
 
       <div class="tab-pane fade" id="traitees" role="tabpanel" aria-labelledby="traitees-tab">
         <div class="table-hover table-responsive m-0">
-          <table class="table table-striped table-borderless">
+          <table class="table table-striped table-borderless text-nowrap">
             <thead class="border-bottom">
               <tr>
                 <th>#</th>
@@ -116,8 +128,7 @@ Liste des demandes
               </tr>
             </thead>
             <tbody>
-              @foreach ($demandes as $demande)
-              @if ($demande->statut != null)
+              @foreach ($demandes->whereNotNull('statut') as $demande)
               <tr>
                 <td>{{ $loop->index + 1 }}</td>
                 <td>{{ $demande->stagiaire->nom }} {{ $demande->stagiaire->prenom }}</td>
@@ -139,7 +150,6 @@ Liste des demandes
                   @include('demandes.responseLink')
                 </th>
               </tr>
-              @endif
               @endforeach
             </tbody>
           </table>
@@ -148,7 +158,7 @@ Liste des demandes
 
       <div class="tab-pane" id="accept" role="tabpanel" aria-labelledby="accept-tab">
         <div class="table-hover table-responsive m-0">
-          <table class="table table-striped table-borderless">
+          <table class="table table-striped table-borderless text-nowrap">
             <thead class="border-bottom">
               <tr>
                 <th>#</th>
@@ -159,16 +169,10 @@ Liste des demandes
               </tr>
             </thead>
             <tbody>
-              @foreach ($demandes as $demande)
-              @php
-              $i = 0;
-              @endphp
-              @if ($demande->statut == "accept")
-              @php
-              $i++;
-              @endphp
+              @foreach ($demandes->where('statut', 'accept') as $demande)
+
               <tr>
-                <td>{{ $i }}</td>
+                <td>{{ $loop->index +1 }}</td>
                 <td>{{ $demande->stagiaire->nom }} {{ $demande->stagiaire->prenom }}</td>
                 <td>{{ $demande->specialite }}</td>
                 <td class="text-center">
@@ -184,7 +188,6 @@ Liste des demandes
                   <a href="{{ route('consulter-demande', ['demande'=>$demande->id]) }}" target="_blank">Consulter</a>
                 </th>
               </tr>
-              @endif
               @endforeach
             </tbody>
           </table>
@@ -194,6 +197,10 @@ Liste des demandes
           {{Session()->get("deleteSuccess")}}
           @endif
         </div>
+      </div>
+
+      <div class="tab-pane" id="renew" role="tabpanel" aria-labelledby="renew-tab">
+        @include('renouveller.index')
       </div>
     </div>
   </div>

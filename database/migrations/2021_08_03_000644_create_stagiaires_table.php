@@ -19,7 +19,7 @@ class CreateStagiairesTable extends Migration
             $table->string('prenom');
             $table->char('sexe');
             $table->date('dateNais');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('tel');
             $table->string('adr');
             $table->string('ecole');

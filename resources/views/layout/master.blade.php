@@ -105,7 +105,7 @@
             </li>
             <li class="nav-item">
               <a href="{{route('maitres')}}" class="nav-link">
-                <i class="fa fa-graduation-cap nav-icon"></i>
+                <i class="fa fa-user-graduate nav-icon"></i>
                 <p>Maitres de stages</p>
               </a>
             </li>
@@ -117,13 +117,13 @@
             </li>
             @else
             <li class="nav-item">
-              <a href="{{route('mes-stages', ['email' => Auth::user()->email ])}}" class="nav-link">
+              <a href="{{route('mes-stages', ['user' => Auth::user() ])}}" class="nav-link">
                 <i class="far fa-folder-open nav-icon"></i>
                 <p>Stages Suivi</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{route('mes-stagiaires', ['email' => Auth::user()->email ])}}" class="nav-link">
+              <a href="{{route('mes-stagiaires', ['user' => Auth::user() ])}}" class="nav-link">
                 <i class="fa fa-users nav-icon"></i>
                 <p>Mes Stagiares</p>
               </a>
@@ -154,6 +154,7 @@
           <div class="row">
             <div class="col"></div>
             <div class="col-12">
+              
               @yield("contenu")
             </div>
             <div class="col"></div>

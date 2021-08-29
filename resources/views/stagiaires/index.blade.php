@@ -29,7 +29,7 @@ Liste des stagiaires
         <table class="table table-head-fixed text-nowrap text-center">
             <thead>
                 <tr>
-                    <th></th>
+                    <th class="text-blue">({{ count($demandes) }}) </th>
                     <th>Nom et Prénoms</th>
                     <th>Sexe</th>
                     <th>Téléphone</th>
@@ -66,11 +66,6 @@ Liste des stagiaires
             @foreach ($errors->all() as $err)
                 {{$err}}
             @endforeach
-        </div>
-        <div class="text-center text-success">
-            @if (Session()->has("deleteSuccess"))
-            {{Session()->get("deleteSuccess")}}
-            @endif
         </div>
     </div>
     <!-- /.card-body -->

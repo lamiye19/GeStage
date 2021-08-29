@@ -5,9 +5,24 @@ Liste des stages
 @endsection
 
 @section("contenu")
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">
+  @if(session()->has("updateSuccess"))
+  <div class="card col-md-5">
+      <div class="card-header d-flex justify-content-arround">
+          <strong class="mr-auto text-warning">Modification</strong>
+          <small class="text-end"> {{ date('h:m:s') }} </small>
+          <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+              </button>
+          </div>
+      </div>
+      <div class="card-body m-0">
+          {{Session()->get("updateSuccess")}}
+      </div>
+  </div>
+  @endif
+</div>
 <div class="card">
-
-
   <div class="card-header">
     <div class="row justify-content-between d-flex">
       <div class="card-tools">
@@ -23,16 +38,6 @@ Liste des stages
       </div>
     </div>
   </div>
-  @if (Session()->has("updateSuccess"))
-  <div class="text-center alert-success py-1 h5">
-    {{Session()->get("updateSuccess")}}
-  </div>
-  @endif
-  @if(session()->has("deleteSuccess"))
-  <div class="text-center alert-success py-1 h4">
-    {{Session()->get("deleteSuccess")}}
-  </div>
-  @endif
   <!-- /.card-header -->
   <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
     <table class="table table-head-fixed text-nowrap">
@@ -47,8 +52,8 @@ Liste des stages
           @if (Auth::user()->is_admin)
           <th>Maitre de stage</th>
           @endif
+          <th>Service</th>
           <th>Observation</th>
-          <th>Rapport</th>
           <th>Statut</th>
           <th>Action</th>
         </tr>
@@ -60,40 +65,53 @@ Liste des stages
           <td>{{ $stage->demande->stagiaire->nom }} {{ $stage->demande->stagiaire->prenom }}</td>
           <td>{{ $stage->titreStage }}</td>
           <td>{{ $stage->theme }}</td>
-          <td>{{ $stage->debut }}</td>
-          <td>{{ $stage->fin }}</td>
+          <td>{{ date('d/m/Y', strtotime($stage->debut ))}}</td>
+          <td>{{ date('d/m/Y', strtotime($stage->fin ))}}</td>
           @if (Auth::user()->is_admin)
           <td>{{ $stage->maitre->nom }} {{ $stage->maitre->prenom }}</td>
           @endif
+          <td>{{ $stage->service->lib }} </td>
           <td>
             @if ($stage->observation == null)
-            @if (!Auth::user()->is_admin)
-            <a href="#" onclick="document.getElementById('noter').hidden = false; ">Noter</a><br>
+              @if (!Auth::user()->is_admin && $stage->etat)
+                <a href="#" onclick="document.getElementById('noter').hidden = false; ">Noter</a><br>
 
-            <form action="{{route('stage.update', ['stage'=>$stage->id])}}" method="post" id="noter" hidden>
-              @csrf
-              <input type="hidden" name="_method" value="put">
-              <div class="d-flex">
-                <select name="observation" id="observation" class="form-control">
-                  <option value="Concluant">Concluant</option>
-                  <option value="Non oncluant">Non oncluant</option>
-                </select>
-                <button type="submit"><i class="fas fa-check"></i></button>
-              </div>
-            </form>
-            @else
-            -
-
-            @endif
+                <form action="{{route('stage.update', ['stage'=>$stage->id])}}" method="post" id="noter" hidden>
+                  @csrf
+                  <input type="hidden" name="_method" value="put">
+                  <div class="d-flex">
+                    <select name="observation" id="observation" class="form-control">
+                      <option value="Concluant">Concluant</option>
+                      <option value="Non oncluant">Non oncluant</option>
+                    </select>
+                    <button type="submit"><i class="fas fa-check"></i></button>
+                  </div>
+                </form>
+              @else
+              -
+              @endif
             @else
             {{ $stage->observation }}
             @endif
           </td>
-          <td>{{ $stage->renduDoc }}</td>
-          <td>{{ $stage->etat }}</td>
+          <td>
+            @if ($stage->etat)
+              <i class="fa fa-check text-teal"></i>
+            @elseif ($stage->etat=0)
+              <i class="fa fa-time text-red"></i>
+            @else
+              <pre class="text-warning">En cours</pre>
+            @endif
+          </td>
           <th>
             <a href="{{ route('consulter-demande', ['demande'=>$stage->demande->id]) }}" target="_blank">CV</a>
 
+            @if ($stage->renduDoc)
+            &nbsp;/&nbsp;
+            <a href="/storage/{{ $stage->renduDoc }}">
+              <i class="fa fa-file-pdf text-danger"></i>
+            </a>
+            @endif
           </th>
         </tr>
         @endforeach

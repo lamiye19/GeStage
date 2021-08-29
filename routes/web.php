@@ -5,6 +5,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StagiaireController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\MaitreController;
+use App\Http\Controllers\RenouvellerController;
 use App\Http\Controllers\StageController;
 use App\Mail\SendEmail;
 use App\Models\Demande;
@@ -27,6 +28,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [DemandeController::class, "ajouter"])->name("ajouter-demande");
 Route::post('/', [DemandeController::class, "create"])->name("demande.create");
 
+Route::get('/soumission-rapport', [StageController::class, "renduDoc"])->name("rendu-stage");
+Route::post('/soumission-rapport', [StageController::class, "verification"])->name("stage.verification");
+Route::put('/soumission-rapport', [StageController::class, "rendre"])->name("stage.rendre");
+Route::get('/renouveller-stage', [StageController::class, "renduDoc"])->name("rendu-stage");
+Route::post('/renouveller-stage', [RenouvellerController::class, "create"])->name("renouveller.create");
+
 Auth::routes();
 
 
@@ -35,12 +42,12 @@ Route::prefix('user-connect')->group(function () {
         Route::get('', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     });
 });
-    Route::middleware('auth')->group(function () {
-        Route::prefix('admin')->group(function () {
-
-            Route::get('', function () {
-                return view('welcome');
-            })->name("admin");
+Route::middleware('auth')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('', function () {
+            return view('welcome');
+        })->name("admin");
+        Route::middleware('isAdmin')->group(function () {
 
             //Routes Service
             Route::prefix('services')->group(function () {
@@ -74,17 +81,21 @@ Route::prefix('user-connect')->group(function () {
             //Routes stagiaire
             Route::prefix('stagiaires')->group(function () {
                 Route::get('', [StagiaireController::class, "index"])->name("stagiaires");
-                Route::get('/my/{email}', [StagiaireController::class, "mine"])->name("mes-stagiaires");
             });
 
             //Routes stage
             Route::prefix('stages')->group(function () {
                 Route::get('', [StageController::class, "index"])->name("stages");
                 Route::put('/update/{stage}', [StageController::class, "update"])->name("stage.update");
-                Route::get('/my/{email}', [StageController::class, "mine"])->name("mes-stages");
             });
         });
+
+        Route::middleware('isNotAdmin')->group(function () {
+        Route::get('/{user:name}/mes-stagiaires', [StagiaireController::class, "mine"])->name("mes-stagiaires");
+        Route::get('/{user:name}/mes-stages', [StageController::class, "mine"])->name("mes-stages");
+        });
     });
+});
 
 
 /* Route::get('/admin/send-email', [StageController::class, "Email"])->name("send");

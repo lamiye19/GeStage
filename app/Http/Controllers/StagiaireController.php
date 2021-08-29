@@ -6,6 +6,7 @@ use App\Models\Demande;
 use App\Models\Maitre;
 use App\Models\Stage;
 use App\Models\Stagiaire;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class StagiaireController extends Controller
@@ -17,13 +18,15 @@ class StagiaireController extends Controller
         return view('stagiaires/index', compact("demandes"));
     }
 
-    function mine (string $email) {
-        $maitre = Maitre::where('email', '=', $email)->get();
+    function mine (User $user) {
+        $maitre = Maitre::where('email', '=', $user->email)->get();
         $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
+        $stages = $stages->groupBy('demande_id');
+       // dd($stages);
         $demandes = [];
         $i = 0;
         foreach($stages as $stage){
-            $demandes[$i] = $stage->demande;
+            $demandes[$i] = $stage->first()->demande;
             $i++;
         }
         

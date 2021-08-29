@@ -22,39 +22,9 @@
             <div class="row justify-content-between m-2">
                 <h1 class="font-weight-bold">CV Générique</h1>
                 <div class="h-0 m-2">
-                    @if ($demande->statut == "refus")
-                      <a href="" class="btn btn-info" onclick="document.getElementById('attente-{{$demande->id}}').submit()">
-                        Donner un RDV
-                      </a>
-                      <form id="attente-{{$demande->id}}" action="{{ route('demande.update', ['demande'=>$demande->id, 'status'=>'attente']) }}"
-                        method="post">
-                        @csrf
-                        <input type="hidden" name="_method" value="put">
-                      </form> 
-                    @elseif ($demande->statut == "attente")
-                      <div class="row">
-                        <a href="" class="btn btn-danger" onclick="document.getElementById('refus-{{$demande->id}}').submit()">
-                            Refuser
-                        </a>&nbsp;
-                          <form id="refus-{{$demande->id}}" action="{{ route('demande.update', ['demande'=>$demande->id, 'status'=>'refus']) }}"
-                            method="post">
-                            @csrf
-                            <input type="hidden" name="_method" value="put">
-                          </form> 
-                        <a href="" class="btn btn-success" onclick="document.getElementById('accept-{{$demande->id}}').submit()">
-                            Accepter
-                        </a>
-                          <form id="accept-{{$demande->id}}" action="{{ route('demande.update', ['demande'=>$demande->id, 'status'=>'accept']) }}"
-                            method="post">
-                            @csrf
-                            <input type="hidden" name="_method" value="put">
-                          </form> 
-                      </div>
-                    @else
-                      
-                    @endif
+                    @include('demandes.responseLink')
                     <div class="">
-                        <a type="reset" href="{{route('demandes')}}" class="mt-2">Retour à la liste des demandes</a>
+                        <a href="{{route('demandes')}}" class="mt-2">Retour à la liste des demandes</a>
                     </div>
                 </div>
             </div>

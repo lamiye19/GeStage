@@ -37,22 +37,17 @@ class ServiceController extends Controller
 
         //Créer l'objet
         Service::create($request->all());
-        /* Service::create([
-            "lib" => $request->lib,
-            "directeur" => $request->directeur
-        ]); */
-
         return back()->with("createSuccess", "Le service '$request->lib' est ajouté avec succèss");
     }
 
     // La methode supprimer
     public function delete (Service $service) {
 
-        $service->maitre()->delete();
+        $service->stage()->delete();
         //Chercher et supprimer le service
         $service->delete();
 
-        return back()->withErrors("deleteSuccess", "Le service '$service->lib' est supprimé avec succèss");
+        return back()->with("deleteSuccess", "Le service '$service->lib' est supprimé avec succèss");
     }
 
     // La methode modifier

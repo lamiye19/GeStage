@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendEmail;
 use App\Models\Demande;
+use App\Models\Renouveller;
 use App\Models\Stagiaire;
 use Dotenv\Parser\Value;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class DemandeController extends Controller
     public function index () {
 
         $demandes = Demande::orderBy("specialite","asc")->get();
-        return view('demandes/index', compact("demandes"));
+        $renews = Renouveller::all();
+        return view('demandes/index', compact("demandes","renews"));
     }
 
     // La vue ajouter
@@ -124,12 +126,12 @@ class DemandeController extends Controller
             $leMail = [
                 'name' => $demande->stagiaire->nom . ' '.$demande->stagiaire->prenom,
                 'email' => $demande->stagiaire->email,
-                'subject' => "Rejet de candidature",
+                'subject' => "Candidature non acceptée",
                 'message' => '<p>En réponse à votre candidature du '. date('d/m/Y', strtotime($demande->created_at)).', je suis au regret de 
                     devoir vous informer que celle-ci n\'a pas été retenue.</p> <p>Soyez cependant assuré que 
                     cette décision ne met pas en cause vos qualités personnelles, ni même celle de votre formation.</p>
                     <p>Nous sommes très sensibles à l\'intérêt que vous portez à notre entreprise, et conservons vos 
-                    coordonnées afin de vous recontacter qu bésoin.</p>
+                    coordonnées afin de vous recontacter au bésoin.</p>
                     <p>Nous vous souhaitons une pleine réussite dans vos recherches futures.</p>'
             ];
             $this->Email($leMail);
