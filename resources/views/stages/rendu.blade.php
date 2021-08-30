@@ -2,8 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h1 class="text-uppercase h2 text-center mb-2">Soumettre son rapport de stage</h1>
-
+    <u>
+    <h3 class="text-uppercase h3 text-center mb-5">Soumettre son rapport de stage ou faire un renouvellement</h3>
+    </u>
     <div class="row d-flex justify-content-end" style="font-size: 0.85em;">
         @if (Session()->has("updateSuccess"))
         <div class="card col-md-12">
@@ -48,6 +49,7 @@
                 </p>
                 @endif
             <form method='post' action="{{route('stage.verification')}}">
+                <h4 class="text-center text-primary"><u>Renseignements</u></h4>
                 <div class="card-body">
                   @csrf
                  <div class="form-group">

@@ -12,7 +12,7 @@
     Accepter
 </a>
 @else
-<a href="#" class="text-danger" onclick="document.getElementById('refus-{{$demande->id}}').submit()">
+ <a href="#" class="text-danger" onclick="document.getElementById('refus-{{$demande->id}}').submit()">
     Refuser
   </a>
   <br>

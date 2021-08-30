@@ -17,8 +17,8 @@ class CreateStagesTable extends Migration
             $table->id();
             $table->string('titreStage');
             $table->string('theme');
-            $table->string('debut');
-            $table->string('fin');
+            $table->date('debut');
+            $table->date('fin');
             $table->string('observation')->nullable();
             $table->string('renduDoc')->nullable();
             $table->boolean('etat')->nullable();

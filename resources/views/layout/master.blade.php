@@ -85,10 +85,16 @@
             
             @if (Auth::user()->is_admin)
 
-            <li class="nav-item menu-open">
+            <li class="nav-item">
               <a href="{{route('demandes')}}" class="nav-link active">
                 <i class="nav-icon fas fa-hand-holding"></i>
                 <p> Demandes </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('renouvellement')}}" class="nav-link">
+                <i class="nav-icon fas fa-hand-holding"></i>
+                <p> Renouvellement </p>
               </a>
             </li>
             <li class="nav-item">

@@ -17,6 +17,7 @@ class CreateRenouvellerTable extends Migration
             $table->id();
             $table->foreignId('demande_id')->constrained();
             $table->foreignId('stagiaire_id')->constrained();
+            $table->boolean('statut')->nullable();
             $table->timestamps();
         });
 

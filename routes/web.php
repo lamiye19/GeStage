@@ -78,6 +78,14 @@ Route::middleware('auth')->group(function () {
                 Route::post('/accept', [StageController::class, "create"])->name("stage.create");
             });
 
+            //Routes demande
+            Route::prefix('renouvellement')->group(function () {
+                Route::get('', [RenouvellerController::class, "index"])->name("renouvellement");
+                Route::put('/update/{renew}', [RenouvellerController::class, "update"])->name("renew.update");
+                Route::get('/accept/{renew}', [StageController::class, "ajouterRenew"])->name("accept-renew");
+                Route::post('/accept/{renew}', [StageController::class, "createRenew"])->name("stageRenew.create");
+            });
+
             //Routes stagiaire
             Route::prefix('stagiaires')->group(function () {
                 Route::get('', [StagiaireController::class, "index"])->name("stagiaires");

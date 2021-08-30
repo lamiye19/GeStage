@@ -65,12 +65,6 @@ Liste des demandes
           Accepté ({{ count($demandes->where('statut', 'accept')) }}) <i class="fa fa-check-double text-success"></i>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link font-weight-bold" id="renew-tab" data-toggle="pill" href="#renew" role="tab"
-          aria-controls="renew" aria-selected="false">
-          Renouvellées ({{ count($demandes->where('statut', 'accept')) }}) <i class="fa fa-camera-retro text-success"></i>
-        </a>
-      </li>
     </ul>
   </div>
   <div class="card-body">
@@ -197,10 +191,6 @@ Liste des demandes
           {{Session()->get("deleteSuccess")}}
           @endif
         </div>
-      </div>
-
-      <div class="tab-pane" id="renew" role="tabpanel" aria-labelledby="renew-tab">
-        @include('renouveller.index')
       </div>
     </div>
   </div>

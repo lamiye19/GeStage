@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendEmail;
 use App\Models\Demande;
 use App\Models\Maitre;
+use App\Models\Renouveller;
 use App\Models\Service;
 use App\Models\Stage;
 use App\Models\Stagiaire;
@@ -22,7 +23,8 @@ class StageController extends Controller
         return view('stages/index', compact("stages"));
     }
 
-    function mine (User $user) {
+    function mine(User $user)
+    {
         $maitre = Maitre::where('email', '=', $user->email)->get();
         //dd($maitre);
         $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
@@ -40,6 +42,17 @@ class StageController extends Controller
         return view('demandes/accept', compact("demande", "maitres", "services"));
     }
 
+
+    // La vue ajouter un stage de renouvellement
+    public function ajouterRenew(Renouveller $renew)
+    {
+
+        $maitres = Maitre::all();
+        $services = Service::all();
+
+        return view('demandes/accept', compact("renew", "maitres", "services"));
+    }
+
     // La vue pour soumettre le document
     public function renduDoc()
     {
@@ -47,6 +60,66 @@ class StageController extends Controller
         $services = Service::all();
 
         return view('stages.rendu', compact("maitres", "services"));
+    }
+    // La methode ajouter
+    public function createRenew(Request $request, Renouveller $renew)
+    {
+
+        //Verifier la validité des champs
+        $request->validate([
+            "titreStage" => "required",
+            "theme" => "required",
+            "debut" => "required",
+            "fin" => "required",
+            "demande_id" => "required",
+            "service_id" => "required",
+            "maitre_id" => "required"
+        ]);
+
+        $stage = new Stage([
+            "titreStage" => $request->titreStage,
+            "theme" => $request->theme,
+            "debut" => $request->debut,
+            "fin" => $request->fin,
+            "demande_id" => $request->demande_id,
+            "maitre_id" => $request->maitre_id,
+            "service_id" => $request->service_id,
+        ]);
+
+        $leMail = [
+            'name' => $stage->demande->stagiaire->nom . ' ' . $stage->demande->stagiaire->prenom,
+            'email' => $stage->demande->stagiaire->email,
+            'subject' => "Renouvellement de stage",
+            'message' => '<p>Votre demande de renouvellement de stage à Pal Service a été acceptée. </p>
+                <p>Voici les informations par rapports à votre nouveau stage:</p>
+                <ul>
+                    <li> Poste : ' . $stage->titreStage . '</li>
+                    <li> thème : ' . $stage->theme . '</li>
+                    <li> Date de début : ' .date('d/m/Y', strtotime($stage->debut))  . '</li>
+                    <li> Date de fin : ' . date('d/m/Y', strtotime($stage->fin)) . '</li>
+                    <li> Maitre de stage : ' . $stage->maitre->nom . ' ' . $stage->maitre->prenom . '</li>
+                    <li>Contacts
+                        <ul class="mail-contact">
+                            <li>
+                                <i class="fas fa-envelope"></i><a class="text-success" href="mailto:' . $stage->maitre->email . '">' . $stage->maitre->email . '
+                            </li>
+                            <li>
+                                <i class="fas fa-phone"></i><a href="tel:' . $stage->maitre->tel . '">' . $stage->maitre->tel . '</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>'
+        ];
+
+        $this->Email($leMail);
+
+        if (Stage::create($request->all())) {
+            /* $renew = Renouveller::where('demande_id', $request->demande_id);
+            $renew = $renew->last(); */
+            $renew->statut = 1;
+            $renew->update();
+        }
+        return back()->with("createSuccess", "Le stage est ajouté avec succèss");
     }
 
 
@@ -68,16 +141,15 @@ class StageController extends Controller
         $stage = new Stage([
             "titreStage" => $request->titreStage,
             "theme" => $request->theme,
+            "debut" => $request->debut,
+            "fin" => $request->fin,
             "demande_id" => $request->demande_id,
             "maitre_id" => $request->maitre_id,
-            "observation" => $request->observation,
-            "note" => $request->observation,
-            "renduDoc" => $request->observation,
-            "effectuer" => true,
+            "service_id" => $request->service_id,
         ]);
 
         $leMail = [
-            'name' => $stage->demande->stagiaire->nom . ' '.$stage->demande->stagiaire->prenom,
+            'name' => $stage->demande->stagiaire->nom . ' ' . $stage->demande->stagiaire->prenom,
             'email' => $stage->demande->stagiaire->email,
             'subject' => "Confirmation de stage",
             'message' => '<p>Votre demande de stage à Pal Service en tant que "' . $stage->demande->specialite . '" été acceptée. </p>
@@ -91,7 +163,7 @@ class StageController extends Controller
                     <li>Contacts
                         <ul class="mail-contact">
                             <li>
-                                <i class="fas fa-envelope"></i><a class="text-success" href="mailto:' . $stage->maitre->email . '">' . $stage->maitre->email .'
+                                <i class="fas fa-envelope"></i><a class="text-success" href="mailto:' . $stage->maitre->email . '">' . $stage->maitre->email . '
                             </li>
                             <li>
                                 <i class="fas fa-phone"></i><a href="tel:' . $stage->maitre->tel . '">' . $stage->maitre->tel . '</a>
@@ -101,8 +173,8 @@ class StageController extends Controller
                 </ul>'
         ];
 
-            $this->Email($leMail);
-        if(Stage::create([
+        $this->Email($leMail);
+        if (Stage::create([
             "titreStage" => $request->titreStage,
             "theme" => $request->theme,
             "demande_id" => $request->demande_id,
@@ -110,12 +182,12 @@ class StageController extends Controller
             "debut" => $request->debut,
             "fin" => $request->fin,
             "service_id" => $request->service_id
-        ])){
+        ])) {
             $demande = Demande::find($request->demande_id);
             $demande->statut = 'accept';
             $demande->update();
         }
-        return back()->with("createSuccess", "Le stage est ajoutée avec succèss");
+        return back()->with("createSuccess", "Le stage est ajouté avec succèss");
     }
     // La methode modifier
     public function update(Request $request, Stage $stage)
@@ -123,7 +195,7 @@ class StageController extends Controller
         $request->validate([
             'observation' => 'required',
         ]);
-        
+
 
         $stage->observation = $request->observation;
 
@@ -138,23 +210,27 @@ class StageController extends Controller
     // La methode modifier
     public function verification(Request $request)
     {
-       $request->validate([
+        $request->validate([
             "email" => "required",
             "service_id" => "required",
             "maitre_id" => "required"
         ]);
-        
+
 
         $stagiaire = Stagiaire::where('email', '=', $request->email)->first();
         $demande = Demande::where('stagiaire_id', '=', $stagiaire->id)->first();
+
+
         $stage = Stage::all();
-        $stage = $stage->where('maitre_id', '=', $request->maitre_id)->where('service_id',$request->service_id)
-                ->where('demande_id', '=', $demande->id)->first();
-       
-        if($stage == null){
+        $stage = $stage->where('maitre_id', '=', $request->maitre_id)->where('service_id', $request->service_id)
+            ->where('demande_id', '=', $demande->id);
+        
+            
+        $stage = $stage[array_key_last($stage->toArray())];
+
+        if ($stage == null) {
             return back()->with("stageFalse", "Les informations entrées ne correspondent pas aux enregistrements.");
-        }
-        else{
+        } else {
 
             return view('stages.rendu', compact("stage"));
         }
@@ -163,7 +239,7 @@ class StageController extends Controller
 
     public function rendre(Request $request)
     {
-       $request->validate([
+        $request->validate([
             "renduDoc" => "required",
         ]);
 
@@ -175,7 +251,7 @@ class StageController extends Controller
         $stage->etat = true;
 
         $stage->update();
-        
+
         return back()->with("updateSuccess", "Rapport enregistré");
     }
 
@@ -203,5 +279,4 @@ class StageController extends Controller
         $stage->statut = null;
         Demande::create($stage->toArray());
     */
-
 }

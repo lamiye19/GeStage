@@ -40,7 +40,7 @@ Liste des stages
   </div>
   <!-- /.card-header -->
   <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
-    <table class="table table-head-fixed text-nowrap">
+    <table class="table table-head-fixed text-nowrap text-center">
       <thead>
         <tr>
           <th>#</th>
@@ -58,7 +58,7 @@ Liste des stages
           <th>Action</th>
         </tr>
       </thead>
-      <tbody class="text-center">
+      <tbody>
         @foreach ($stages as $stage)
         <tr>
           <td>{{ $loop->index + 1 }}</td>

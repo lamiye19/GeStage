@@ -24,13 +24,17 @@ Informations du stage
 </div>
 <div class="row d-flex justify-content-center">
     <div class="card col-md-8">
+      @isset($demande)
       <form method='post' action="{{route('stage.create')}}">
+        @else
+      <form method='post' action="{{route('stageRenew.create', ['renew' => $renew->id])}}">
+        @endisset
         <div class="card-body">
           @csrf
           
           <div class="form-group">
             <label for="">Titre</label>
-            <input type="text" class="form-control" id="" name="titreStage" value="{{ $demande->titre }}">
+            <input type="text" class="form-control" id="" name="titreStage">
           </div>
           <div class="form-group">
             <label for="">Thème</label>
@@ -38,7 +42,7 @@ Informations du stage
           </div>
           <div class="form-group">
             <label for="">Date de début</label>
-            <input type="date" class="form-control" id="" name="debut">
+            <input type="date" class="form-control" id="" name="debut" min="{{ date() }} >
           </div>
           <div class="form-group">
             <label for="">Date de fin</label>
@@ -63,7 +67,11 @@ Informations du stage
             </select>
           </div>
           <div class="form-group">
+            @isset($demande)
             <input type="hidden" class="form-control" id="" name="demande_id" value="{{ $demande->id }}">
+              @else
+            <input type="hidden" class="form-control" id="" name="demande_id" value="{{ $renew->demande->id }}">
+            @endisset
           </div>
         </div>
         <!-- /.card-body -->
@@ -74,7 +82,11 @@ Informations du stage
             <button type="reset" class="btn btn-danger">Annuler</button>
           </div>
           <div class="mt-3">
+            @isset($demande)
             <a type="reset" href="{{route('demandes')}}" class="mt-2">Retour à la liste des demandes</a>
+            @else
+            <a type="reset" href="{{route('renouvellement')}}" class="mt-2">Retour à la liste des renouvellements</a>
+            @endisset
           </div>
         </div>
       </form>

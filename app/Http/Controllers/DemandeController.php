@@ -141,7 +141,7 @@ class DemandeController extends Controller
                 $demande->all()
             ]);
     
-            return back()->with("updateSuccess", "La demande a été refusé");
+            return back()->with("updateSuccess", "La demande a été refusée.");
         }
         elseif($statut == 'attente') {
             $request->validate([
@@ -166,7 +166,7 @@ class DemandeController extends Controller
                 $demande->all()
             ]);
     
-            return back()->with("updateSuccess", "La demande a changé de status");
+            return back()->with("updateSuccess", "La demande a été mise en attente.");
         }
 
     }
