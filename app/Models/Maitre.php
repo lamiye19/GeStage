@@ -13,4 +13,7 @@ class Maitre extends Model
 
     protected $fillable = ["nom", "prenom", "sexe", "dateNais", "adr", "tel", "email", "poste"];
 
+    public function stage(){
+        return $this->hasMany(Stage::class);
+    }
 }

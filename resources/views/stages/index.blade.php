@@ -97,8 +97,6 @@ Liste des stages
           <td>
             @if ($stage->etat)
               <i class="fa fa-check text-teal"></i>
-            @elseif ($stage->etat=0)
-              <i class="fa fa-time text-red"></i>
             @else
               <pre class="text-warning">En cours</pre>
             @endif

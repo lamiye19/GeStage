@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRenouvellerTable extends Migration
+class CreateRenouvelersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRenouvellerTable extends Migration
      */
     public function up()
     {
-        Schema::create('renouveller', function (Blueprint $table) {
+        Schema::create('renouvelers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('demande_id')->constrained();
             $table->foreignId('stagiaire_id')->constrained();
@@ -31,10 +31,10 @@ class CreateRenouvellerTable extends Migration
      */
     public function down()
     {
-        Schema::table('renouveller', function(Blueprint $table){
+        Schema::table('renouvelers', function(Blueprint $table){
             $table->dropForeign('demande_id', 'stagiaire_id');
         });
         
-        Schema::dropIfExists('renouveller');
+        Schema::dropIfExists('renouvelers');
     }
 }

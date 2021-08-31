@@ -131,7 +131,7 @@
                         <input type="submit" class="btn border" value="Soumettre">
                     </form>
                 @else
-                    <form action="{{route('renouveller.create')}}" method="post">
+                    <form action="{{route('renouveler.create')}}" method="post">
                         @csrf
                         <input type="hidden" name="stagiaire_id" value="{{$stage->demande->stagiaire_id}}">
                         <input type="hidden" name="demande_id" value="{{$stage->demande_id}}">

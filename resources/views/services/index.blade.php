@@ -43,12 +43,13 @@ Liste des services
   </div>
   <!-- /.card-header -->
   <div class="card-body table-hover table-responsive p-0" style="height: 300px;">
-    <table class="table table-head-fixed text-nowrap">
+    <table class="table table-head-fixed text-nowrap text-center">
       <thead>
         <tr>
-          <th>#</th>
+          <th class="text-primary">( {{ count($services) }} )</th>
           <th>Libellé</th>
           <th>Directeur</th>
+          <th>Nbre de stages</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -58,9 +59,16 @@ Liste des services
           <td>{{ $loop->index + 1 }}</td>
           <td>{{ $service->lib }}</td>
           <td>{{ $service->directeur }}</td>
+          <td>
+            {{ count($service->stage) }} 
+            @if (count($service->stage) != 0)
+              <a href="{{ route('show-service', ['service' => $service->id]) }}"> - Voir</a>
+            @endif
+            
+        </td>
           <th>
             <a href="{{ route('service.update', ['service'=>$service->id]) }} "><i class="far fa-edit"></i></a>
-            <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce service? Les informations liés aux stages seront supprimées avec.')){
+            {{-- <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce service? Les informations liés aux stages seront supprimées avec.')){
               document.getElementById('form-{{$service->id}}').submit()}">
               <i class="far fa-trash-alt text-danger"></i>
             </a>
@@ -68,7 +76,7 @@ Liste des services
               method="post">
               @csrf
               <input type="hidden" name="_method" value="delete">
-            </form>
+            </form> --}}
           </th>
         </tr>
         @endforeach

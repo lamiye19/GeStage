@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendEmail;
 use App\Models\Demande;
-use App\Models\Renouveller;
+use App\Models\Renouveler;
 use App\Models\Stagiaire;
 use Dotenv\Parser\Value;
 use Illuminate\Http\Request;
@@ -16,7 +16,7 @@ class DemandeController extends Controller
     public function index () {
 
         $demandes = Demande::orderBy("specialite","asc")->get();
-        $renews = Renouveller::all();
+        $renews = Renouveler::all();
         return view('demandes/index', compact("demandes","renews"));
     }
 

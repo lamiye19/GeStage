@@ -11,27 +11,55 @@ use Illuminate\Http\Request;
 
 class StagiaireController extends Controller
 {
-    function index () {
+    function index(Request $request)
+    {
+        $stagiaires = Stagiaire::where([
+            [function ($query) use ($request) {
+                if (($mot = $request->search)) {
+                    $query->orWhere('nom', 'LIKE', '%' . $mot . '%')
+                    ->orWhere('prenom', 'LIKE', '%' . $mot . '%')
+                    ->orWhere('email', 'LIKE', '%' . $mot . '%')
+                        ->get();
+                }
+            }]
+        ])->orderBy('nom', 'asc')->get();
 
-        $demandes = Demande::where('statut', '=', 'accept')->get();
-
-        return view('stagiaires/index', compact("demandes"));
+        return view('stagiaires/index', compact("stagiaires"));
     }
 
-    function mine (User $user) {
-        $maitre = Maitre::where('email', '=', $user->email)->get();
-        $stages = Stage::where('maitre_id', '=', $maitre[0]->id)->get();
-        $stages = $stages->groupBy('demande_id');
-       // dd($stages);
-        $demandes = [];
+    function mine(Request $request, User $user)
+    {
+        $maitre = Maitre::where('email', '=', $user->email)->first();
+        $stages = Stage::where('maitre_id', '=', $maitre->id)->get();
+        $stagiaires = $stages;
+        // dd($stages);
         $i = 0;
-        foreach($stages as $stage){
-            $demandes[$i] = $stage->first()->demande;
+        foreach ($stages as $stage) {
+            $stagiaires[$i] = $stage->demande->stagiaire;
             $i++;
         }
-        
-        return view('stagiaires/index', compact("demandes"));
+
+        $stagiaires = $stagiaires->unique();
+        if (isset($request->search)) {
+            $ids = [];
+            foreach ($stagiaires as $s) {
+                array_push($ids, $s->id);
+            }
+            $stagiaires = Stagiaire::where([
+                [function ($query) use ($request) {
+                    if (($mot = $request->search)) {
+                        $query->orWhere('nom', 'LIKE', '%' . $mot . '%')
+                            ->orWhere('prenom', 'LIKE', '%' . $mot . '%')
+                            ->orWhere('email', 'LIKE', '%' . $mot . '%')
+                            ->get();
+                    }
+                }]
+            ])->whereIn('id', $ids)->orderBy('nom', 'asc')->get();
+        }
+
+        return view('stagiaires/index', compact("stagiaires"));
     }
+
 
     // La vue ajouter
     /* public function ajouter () {

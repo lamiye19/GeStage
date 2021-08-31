@@ -56,8 +56,7 @@ Liste des renouvellements
             <li class="nav-item">
                 <a class="nav-link font-weight-bold" id="accept-tab" data-toggle="pill" href="#accept" role="tab"
                     aria-controls="accept" aria-selected="false">
-                    Acceptée ({{ count($renews->where('statut', 1)) }}) <i
-                        class="fa fa-check-double text-success"></i>
+                    Acceptée ({{ count($renews->where('statut', 1)) }}) <i class="fa fa-check-double text-success"></i>
                 </a>
             </li>
             <li class="nav-item">
@@ -137,8 +136,15 @@ Liste des renouvellements
                                 <th>
                                     <a href="{{ route('consulter-demande', ['demande' => $renew->demande->id]) }}"
                                         target="_blank">Consulter</a>
+                                    {{-- Formulaire de refus --}}
+                                    <form id="refus-{{$renew->id}}"
+                                        action="{{ route('renew.update', ['renew'=>$renew->id]) }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="_method" value="put">
+                                    </form>
                                 </th>
                             </tr>
+
                             @endforeach
                         </tbody>
                     </table>
@@ -189,11 +195,5 @@ Liste des renouvellements
 </div>
 
 
-{{-- Formulaire de refus --}}
-<form id="refus-{{$renew->id}}" action="{{ route('renew.update', ['renew'=>$renew->id]) }}"
-    method="post">
-    @csrf
-    <input type="hidden" name="_method" value="put">
-</form>
 <!-- /.card -->
 @endsection

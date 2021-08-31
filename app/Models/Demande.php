@@ -23,7 +23,7 @@ class Demande extends Model
         return $this->hasMany(Stage::class);
     }
 
-    public function renouveller(){
-        return $this->hasMany(Renouveller::class);
+    public function renouveler(){
+        return $this->hasMany(Renouveler::class);
     }
 }

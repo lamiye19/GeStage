@@ -42,7 +42,7 @@ Informations du stage
           </div>
           <div class="form-group">
             <label for="">Date de début</label>
-            <input type="date" class="form-control" id="" name="debut" min="{{ date() }} >
+            <input type="date" class="form-control" id="" name="debut" min="{{ date(now()) }} ">
           </div>
           <div class="form-group">
             <label for="">Date de fin</label>

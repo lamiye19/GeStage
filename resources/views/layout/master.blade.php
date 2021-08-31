@@ -82,18 +82,24 @@
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+            <li class="nav-item">
+              <a href="{{route('admin')}}" class="nav-link active">
+                <i class="nav-icon fas fa-home"></i>
+                <p> Accueil </p>
+              </a>
+            </li>
             
             @if (Auth::user()->is_admin)
 
             <li class="nav-item">
-              <a href="{{route('demandes')}}" class="nav-link active">
-                <i class="nav-icon fas fa-hand-holding"></i>
+              <a href="{{route('demandes')}}" class="nav-link">
+                <i class="nav-icon fas fa-question-circle"></i>
                 <p> Demandes </p>
               </a>
             </li>
             <li class="nav-item">
               <a href="{{route('renouvellement')}}" class="nav-link">
-                <i class="nav-icon fas fa-hand-holding"></i>
+                <i class="nav-icon fas fa-sync"></i>
                 <p> Renouvellement </p>
               </a>
             </li>

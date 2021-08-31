@@ -1,7 +1,7 @@
 @extends("layout.master")
 
 @section("titre")
-Liste des maitres
+Liste des maitres de stage <span class="text-primary">( {{ count($maitres) }} )</span>
 @endsection
 
 @section("contenu")
@@ -27,15 +27,18 @@ Liste des maitres
     <div class="card-header">
         <div class="row justify-content-between d-flex">
             <div class="card-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
+                <form action="{{ route('maitres')}} " method="get" role="search" id="research">
+                    <div class="input-group" style="width: 150px;">
+                    <input type="text" name="search" class="form-control float-right" placeholder="Search"
+                    id="search">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-default">
                             <i class="fas fa-search"></i>
                         </button>
-                    </div>
+                    </div>    
                 </div>
+
+                    </form>
             </div>
             <a href="{{route('ajouter-maitre')}}">
                 <div class="btn btn-primary">Ajouter</div>
@@ -77,8 +80,13 @@ Liste des maitres
                         </div>
                         <div class="card-footer">
                             <div class="text-right">
-                                <a href="tel:{{ $maitre->tel }}" class="btn btn-sm bg-teal">
-                                    <i class="fas fa-phone"></i>
+                                @if (count($maitre->stage) !=0)
+                                <a href="{{ route('show-maitre', ['maitre' => $maitre->id]) }}" class="btn btn-sm btn-outline-secondary">
+                                    @else
+                                <a class="btn btn-sm btn-outline-secondary">
+                                @endif
+                                    ({{ count($maitre->stage) }} )
+                                    <i class="fas fa-folder"></i>
                                 </a>
                                 <a href="mailto:{{ $maitre->email }}" class="btn btn-sm bg-teal">
                                     <i class="fas fa-envelope"></i>
@@ -87,7 +95,7 @@ Liste des maitres
                                     class="btn btn-sm btn-primary">
                                     <i class="far fa-edit"></i> Modifier
                                 </a>
-                                <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce maitre?')){
+                                {{-- <a href="" onclick="if(confirm('Voulez-vous vraiment supprimer ce maitre? Les informations liés aux stages seront supprimées avec.')){
                                 document.getElementById('form-{{$maitre->id}}').submit()}"
                                     class="btn btn-sm btn-danger">
                                     <i class="far fa-trash-alt"></i>
@@ -96,7 +104,7 @@ Liste des maitres
                                     action="{{route('maitre.delete', ['maitre'=>$maitre->id])}}" method="post">
                                     @csrf
                                     <input type="hidden" name="_method" value="delete">
-                                </form>
+                                </form> --}}
                             </div>
                         </div>
                     </div>

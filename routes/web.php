@@ -5,10 +5,12 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StagiaireController;
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\MaitreController;
-use App\Http\Controllers\RenouvellerController;
+use App\Http\Controllers\RenouvelerController;
 use App\Http\Controllers\StageController;
 use App\Mail\SendEmail;
 use App\Models\Demande;
+use App\Models\Maitre;
+use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -31,8 +33,8 @@ Route::post('/', [DemandeController::class, "create"])->name("demande.create");
 Route::get('/soumission-rapport', [StageController::class, "renduDoc"])->name("rendu-stage");
 Route::post('/soumission-rapport', [StageController::class, "verification"])->name("stage.verification");
 Route::put('/soumission-rapport', [StageController::class, "rendre"])->name("stage.rendre");
-Route::get('/renouveller-stage', [StageController::class, "renduDoc"])->name("rendu-stage");
-Route::post('/renouveller-stage', [RenouvellerController::class, "create"])->name("renouveller.create");
+Route::get('/renouveler-stage', [StageController::class, "renduDoc"])->name("rendu-stage");
+Route::post('/renouveler-stage', [RenouvelerController::class, "create"])->name("renouveler.create");
 
 Auth::routes();
 
@@ -45,7 +47,9 @@ Route::prefix('user-connect')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('', function () {
-            return view('welcome');
+            $maitres = Maitre::orderBy('nom', 'asc')->get();
+            $services = Service::orderBy('lib', 'asc')->get();
+            return view('welcome', compact("maitres", "services"));
         })->name("admin");
         Route::middleware('isAdmin')->group(function () {
 
@@ -80,8 +84,8 @@ Route::middleware('auth')->group(function () {
 
             //Routes demande
             Route::prefix('renouvellement')->group(function () {
-                Route::get('', [RenouvellerController::class, "index"])->name("renouvellement");
-                Route::put('/update/{renew}', [RenouvellerController::class, "update"])->name("renew.update");
+                Route::get('', [RenouvelerController::class, "index"])->name("renouvellement");
+                Route::put('/update/{renew}', [RenouvelerController::class, "update"])->name("renew.update");
                 Route::get('/accept/{renew}', [StageController::class, "ajouterRenew"])->name("accept-renew");
                 Route::post('/accept/{renew}', [StageController::class, "createRenew"])->name("stageRenew.create");
             });
@@ -89,20 +93,34 @@ Route::middleware('auth')->group(function () {
             //Routes stagiaire
             Route::prefix('stagiaires')->group(function () {
                 Route::get('', [StagiaireController::class, "index"])->name("stagiaires");
+                Route::get('/show/{demande}', [StagiaireController::class, "generatePdf"])->name("show-stage");
             });
 
             //Routes stage
             Route::prefix('stages')->group(function () {
                 Route::get('', [StageController::class, "index"])->name("stages");
-                Route::put('/update/{stage}', [StageController::class, "update"])->name("stage.update");
+            });
+
+            //Routes statistiques
+            Route::prefix('statistiques')->group(function () {
+                Route::get('/show-stagiaire/{demande}', ['App\Http\Controllers\StatistiqueController', "showStagiaire"])->name("show-stagiaire");
+                Route::get('/show-maitre/{maitre}', ['App\Http\Controllers\StatistiqueController', "showMaitre"])->name("show-maitre");
+                Route::get('/show/-service{service}', ['App\Http\Controllers\StatistiqueController', "showService"])->name("show-service");
             });
         });
 
         Route::middleware('isNotAdmin')->group(function () {
-        Route::get('/{user:name}/mes-stagiaires', [StagiaireController::class, "mine"])->name("mes-stagiaires");
-        Route::get('/{user:name}/mes-stages', [StageController::class, "mine"])->name("mes-stages");
+            Route::get('/{user:name}/mes-stagiaires', [StagiaireController::class, "mine"])->name("mes-stagiaires");
+            Route::get('/{user:name}/mes-stages', [StageController::class, "mine"])->name("mes-stages");
+            Route::put('/update/{stage}', [StageController::class, "update"])->name("stage.update");
+        });
+
+        Route::prefix('statistiques')->group(function () {
+            Route::post('/maitre-stagiaire/maitre', ['App\Http\Controllers\StatistiqueController', "maitreStagiaire"])->name("maitre-stagiaire");
+            Route::post('/show/-service/maitre/service', ['App\Http\Controllers\StatistiqueController', "serviceStagiaire"])->name("maitre-service-stagiaire");
         });
     });
+
 });
 
 

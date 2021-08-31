@@ -22,7 +22,7 @@ class CreateMaitresTable extends Migration
             $table->string('tel');
             $table->string('email')->unique();
             $table->string('adr');
-            $table->string('poste')->unique();
+            $table->string('poste');
         });
 
     }

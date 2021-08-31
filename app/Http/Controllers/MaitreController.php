@@ -9,38 +9,53 @@ use Illuminate\Http\Request;
 class MaitreController extends Controller
 {
 
-    function index () {
+    function index(Request $request)
+    {
 
-        $maitres = Maitre::orderBy("nom","asc")->get();
+        $maitres = Maitre::where([
+            [function ($query) use ($request) {
+                if (($mot = $request->search)) {
+                    $query->orWhere('nom', 'LIKE', '%' . $mot . '%')
+                        ->orWhere('prenom', 'LIKE', '%' . $mot . '%')
+                        ->orWhere('email', 'LIKE', '%' . $mot . '%')
+                        ->orWhere('poste', 'LIKE', '%' . $mot . '%')
+                        ->get();
+                }
+            }]
+        ])->orderBy("nom", "asc")->get();
+
         return view('maitres/index', compact("maitres"));
     }
 
     // La vue ajouter
-    public function ajouter () {
-        
+    public function ajouter()
+    {
+
         return view('maitres/create');
     }
 
     // La vue modifier
-    public function modifier (Maitre $maitre) {
-        
+    public function modifier(Maitre $maitre)
+    {
+
         return view('maitres/update', compact("maitre"));
     }
 
 
     // La methode ajouter
-    function create (Request $request) {
+    function create(Request $request)
+    {
 
         //Verifier la validité des champs
         $request->validate([
-            "nom"=>"required",
-            "prenom"=>"required",
-            "sexe"=>"required",
-            "dateNais"=>"required",
-            "tel"=>"required",
-            "email"=>"required",
-            "adr"=>"required",
-            "poste"=>"required"
+            "nom" => "required",
+            "prenom" => "required",
+            "sexe" => "required",
+            "dateNais" => "required",
+            "tel" => "required",
+            "email" => "required",
+            "adr" => "required",
+            "poste" => "required"
         ]);
 
         //Créer l'objet
@@ -50,7 +65,10 @@ class MaitreController extends Controller
     }
 
     // La methode supprimer
-    public function delete (Maitre $maitre) {
+    public function delete(Maitre $maitre)
+    {
+
+        //$maitre->stage()->delete();
 
         //Chercher et supprimer le maitre
         $maitre->delete();
@@ -59,18 +77,19 @@ class MaitreController extends Controller
     }
 
     // La methode modifier
-    public function update (Request $request, Maitre $maitre) {
+    public function update(Request $request, Maitre $maitre)
+    {
 
         //Verifier la validité des champs
         $request->validate([
-            "nom"=>"required",
-            "prenom"=>"required",
-            "sexe"=>"required",
-            "dateNais"=>"required",
-            "tel"=>"required",
-            "email"=>"required",
-            "adr"=>"required",
-            "poste"=>"required",
+            "nom" => "required",
+            "prenom" => "required",
+            "sexe" => "required",
+            "dateNais" => "required",
+            "tel" => "required",
+            "email" => "required",
+            "adr" => "required",
+            "poste" => "required",
         ]);
 
         //Modifier l'objet

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\SendEmail;
 use App\Models\Demande;
 use App\Models\Maitre;
-use App\Models\Renouveller;
+use App\Models\Renouveler;
 use App\Models\Service;
 use App\Models\Stage;
 use App\Models\Stagiaire;
@@ -44,7 +44,7 @@ class StageController extends Controller
 
 
     // La vue ajouter un stage de renouvellement
-    public function ajouterRenew(Renouveller $renew)
+    public function ajouterRenew(Renouveler $renew)
     {
 
         $maitres = Maitre::all();
@@ -62,7 +62,7 @@ class StageController extends Controller
         return view('stages.rendu', compact("maitres", "services"));
     }
     // La methode ajouter
-    public function createRenew(Request $request, Renouveller $renew)
+    public function createRenew(Request $request, Renouveler $renew)
     {
 
         //Verifier la validité des champs
@@ -114,7 +114,7 @@ class StageController extends Controller
         $this->Email($leMail);
 
         if (Stage::create($request->all())) {
-            /* $renew = Renouveller::where('demande_id', $request->demande_id);
+            /* $renew = Renouveler::where('demande_id', $request->demande_id);
             $renew = $renew->last(); */
             $renew->statut = 1;
             $renew->update();

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Renouveller extends Model
+class Renouveler extends Model
 {
     use HasFactory;
     

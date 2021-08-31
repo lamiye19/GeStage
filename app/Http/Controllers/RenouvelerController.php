@@ -4,25 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendEmail;
 use App\Models\Demande;
-use App\Models\Renouveller;
+use App\Models\Renouveler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
-class RenouvellerController extends Controller
+class RenouvelerController extends Controller
 {
     public function index () {
-        $renews = Renouveller::all();
-        return view('renouveller.index', compact("renews"));
+        $renews = Renouveler::all();
+        return view('renouveler.index', compact("renews"));
     }
 
     public function create (Request $request) {
         
-        Renouveller::create($request->all());
+        Renouveler::create($request->all());
         return back()->with("createSuccess", "Votre demande de renouvellement a été enregistré");
     }
 
     // La methode modifier - refuser
-    public function update (Request $request, Renouveller $renew) {
+    public function update (Request $request, Renouveler $renew) {
 
         $renew->statut = 0;
             $leMail = [
@@ -39,15 +39,14 @@ class RenouvellerController extends Controller
 
             //Modifier l'objet
             $renew->update([
-                $renew->all()
+                $renew->all() 
             ]);
     
             return back()->with("updateSuccess", "La demande de renouvellement a été refusée.");
-    }
+     }
 
     public function Email(array $data)
     {
-
         Mail::to($data['email'])
             ->send(new SendEmail($data));
 
