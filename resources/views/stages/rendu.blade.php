@@ -94,7 +94,7 @@
             <div class="text-center">
                 @if ($stage->fin < date(now()))
             <p class="text-danger font-weight-bold my-5">
-                Vous n'est pas encore autorisé à effectuer ces actions
+                Vous n'êtes pas encore autorisé à effectuer ces actions
             </p>
             @else
             <u><h4>Résultat</h4></u>

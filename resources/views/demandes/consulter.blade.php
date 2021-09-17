@@ -22,7 +22,7 @@
             <div class="row justify-content-between m-2">
                 <h1 class="font-weight-bold">CV Générique</h1>
                 <div class="h-0 m-2">
-                    @include('demandes.responseLink')
+                   {{--  @include('demandes.responseLink') --}}
                     <div class="">
                         <a href="{{route('demandes')}}" class="mt-2">Retour à la liste des demandes</a>
                     </div>

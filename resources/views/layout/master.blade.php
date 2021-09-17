@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Administration- {{ config('app.name', 'GeStage') }}</title>
-
+  <link rel="shortcut icon" href="/fav.ico" type="image/x-icon">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,8 +30,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="{{ route('admin') }}" class="brand-link">
-        <img src="" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-bold">{{ config('app.name', 'GeStage') }}</span>
+        <img src="/fav.png" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-bold">{{ config('app.name', 'PalStage') }}</span>
       </a>
 
       <!-- Sidebar -->
@@ -95,6 +95,12 @@
               <a href="{{route('demandes')}}" class="nav-link">
                 <i class="nav-icon fas fa-question-circle"></i>
                 <p> Demandes </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{route('rdvs')}}" class="nav-link">
+                <i class="nav-icon fa fa-calendar-check"></i>
+                <p> Rendez-vous </p>
               </a>
             </li>
             <li class="nav-item">

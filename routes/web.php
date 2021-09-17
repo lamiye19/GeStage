@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StagiaireController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\RdvController;
 use App\Http\Controllers\MaitreController;
 use App\Http\Controllers\RenouvelerController;
 use App\Http\Controllers\StageController;
@@ -14,6 +15,8 @@ use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+
+use function PHPUnit\Framework\returnSelf;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +32,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DemandeController::class, "ajouter"])->name("ajouter-demande");
 Route::post('/', [DemandeController::class, "create"])->name("demande.create");
+
+
+//CONFIRMATION DE RDV
+Route::put('/confirmation/{rdv}', [RdvController::class, "update"])->name("rdv.update");
+Route::get('/confirmation/{rdv}', [RdvController::class, "modifier"])->name("modifier-rdv");
+
 
 Route::get('/soumission-rapport', [StageController::class, "renduDoc"])->name("rendu-stage");
 Route::post('/soumission-rapport', [StageController::class, "verification"])->name("stage.verification");
@@ -61,6 +70,16 @@ Route::middleware('auth')->group(function () {
                 Route::delete('/delete/{service}', [ServiceController::class, "delete"])->name("service.delete");
                 Route::put('/update/{service}', [ServiceController::class, "update"])->name("service.update");
                 Route::get('/update/{service}', [ServiceController::class, "modifier"])->name("modifier-service");
+            });
+
+            //Routes Rdv
+            Route::prefix('rdvs')->group(function () {
+                Route::get('', [RdvController::class, "index"])->name("rdvs");
+                Route::put('/reprise/{rdv}', [RdvController::class, "reprise"])->name("rdv.reprise");
+                /* Route::get('/create', [ServiceController::class, "ajouter"])->name("ajouter-service");
+                Route::post('/create', [ServiceController::class, "create"])->name("service.create");
+                Route::delete('/delete/{service}', [ServiceController::class, "delete"])->name("service.delete");
+                Route::get('/update/{service}', [ServiceController::class, "modifier"])->name("modifier-service"); */
             });
 
             //Routes Maitre
@@ -120,7 +139,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/show/-service/maitre/service', ['App\Http\Controllers\StatistiqueController', "serviceStagiaire"])->name("maitre-service-stagiaire");
         });
     });
-
 });
 
 
