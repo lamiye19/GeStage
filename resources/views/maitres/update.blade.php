@@ -71,18 +71,25 @@ Modifier un maitre de stage
                             <i class="fas fa-envelope"></i>
                           </span>
                         </div>
-                        <input type="email" class="form-control" value="{{$maitre->email}}" name="email">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" required name="email" 
+                        pattern="[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex: test@gmail.com" value="{{ $maitre->email }}">
+                        @error('email')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="">Telephone</label>
+                      <label for="">Téléphone</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
                             <i class="fas fa-phone"></i>
                           </span>
                         </div>
-                        <input type="tel" class="form-control" value="{{$maitre->tel}}" name="tel">
+                        <input type="tel" class="form-control" value="{{$maitre->tel}}" name="tel"
+                        pattern="[79]{1}[01236789]{1}[0-9]{6}" title="Veuillez entrer un numéro de téléphone valide">
                       </div>
                     </div>
                     <div class="form-group">

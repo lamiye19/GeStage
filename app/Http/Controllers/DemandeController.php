@@ -51,7 +51,7 @@ class DemandeController extends Controller
             "sexe" => "required",
             "dateNais" => "required",
             "tel" => "required",
-            "email" => "required",
+            "email" => ['required', 'unique:stagiaires'],
             "ecole" => "required",
             "adr" => "required",
             "specialite" => "required",

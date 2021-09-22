@@ -13,16 +13,24 @@ class StagiaireController extends Controller
 {
     function index(Request $request)
     {
+        $demandes = Demande::where('statut', 'accept')->get();
+        $ids = [];
+        foreach ($demandes as $d) {
+            array_push($ids, $d->stagiaire_id);
+        }
         $stagiaires = Stagiaire::where([
             [function ($query) use ($request) {
                 if (($mot = $request->search)) {
                     $query->orWhere('nom', 'LIKE', '%' . $mot . '%')
-                    ->orWhere('prenom', 'LIKE', '%' . $mot . '%')
-                    ->orWhere('email', 'LIKE', '%' . $mot . '%')
+                        ->orWhere('prenom', 'LIKE', '%' . $mot . '%')
+                        ->orWhere('email', 'LIKE', '%' . $mot . '%')
                         ->get();
                 }
             }]
-        ])->orderBy('nom', 'asc')->get();
+        ])->whereIn('id', $ids)->orderBy('nom', 'asc')->get();
+
+        /* dd($stagiaires); */
+
 
         return view('stagiaires/index', compact("stagiaires"));
     }
@@ -35,8 +43,10 @@ class StagiaireController extends Controller
         // dd($stages);
         $i = 0;
         foreach ($stages as $stage) {
-            $stagiaires[$i] = $stage->demande->stagiaire;
-            $i++;
+            if ($stage->demande->statut == 'accept') {
+                $stagiaires[$i] = $stage->demande->stagiaire;
+                $i++;
+            }
         }
 
         $stagiaires = $stagiaires->unique();

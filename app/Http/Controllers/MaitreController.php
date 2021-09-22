@@ -53,7 +53,7 @@ class MaitreController extends Controller
             "sexe" => "required",
             "dateNais" => "required",
             "tel" => "required",
-            "email" => "required",
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:maitres'],
             "adr" => "required",
             "poste" => "required"
         ]);

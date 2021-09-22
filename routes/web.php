@@ -30,8 +30,11 @@ use function PHPUnit\Framework\returnSelf;
 */
 
 
-Route::get('/', [DemandeController::class, "ajouter"])->name("ajouter-demande");
-Route::post('/', [DemandeController::class, "create"])->name("demande.create");
+Route::get('/', function () {
+    return view('index');
+})->name("accueil");
+Route::get('/demande', [DemandeController::class, "ajouter"])->name("ajouter-demande");
+Route::post('/demande', [DemandeController::class, "create"])->name("demande.create");
 
 
 //CONFIRMATION DE RDV
@@ -96,7 +99,6 @@ Route::middleware('auth')->group(function () {
             Route::prefix('demandes')->group(function () {
                 Route::get('', [DemandeController::class, "index"])->name("demandes");
                 Route::put('/update/{demande}/{status}', [DemandeController::class, "update"])->name("demande.update");
-                Route::get('/consulter/{demande}', [DemandeController::class, "consulter"])->name("consulter-demande");
                 Route::get('/accept/{demande}', [StageController::class, "ajouter"])->name("accept-demande");
                 Route::post('/accept', [StageController::class, "create"])->name("stage.create");
             });
@@ -138,6 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/maitre-stagiaire/maitre', ['App\Http\Controllers\StatistiqueController', "maitreStagiaire"])->name("maitre-stagiaire");
             Route::post('/show/-service/maitre/service', ['App\Http\Controllers\StatistiqueController', "serviceStagiaire"])->name("maitre-service-stagiaire");
         });
+        Route::get('/consulter/{demande}', [DemandeController::class, "consulter"])->name("consulter-demande");
     });
 });
 

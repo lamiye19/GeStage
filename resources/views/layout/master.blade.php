@@ -47,7 +47,7 @@
           </div>
           <div class="info">
             <a href="#" class="d-inline justify-content-around">              
-              <li class="nav-item">
+              <p class="nav-item">
 
                 <strong>{{ Auth::user()->name }}</strong>&nbsp;
 
@@ -59,7 +59,7 @@
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                   @csrf
                 </form>
-              </li>
+              </p>
             </a>
           </div>
         </div>

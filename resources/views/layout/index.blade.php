@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Accueil</title>
@@ -18,12 +18,15 @@
 
     <nav class="navbar navbar-expand navbar-light navbar-light">
       <a href="{{ route('admin') }}" class="brand-link">
-        <img src="" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="/fav.png" alt="" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-bold">{{ config('app.name', 'GeStage') }}</span>
       </a><!-- Left navbar links -->
       <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link btn active" href="{{ route('accueil') }}" role="button">Accueil</a>
+        </li>
         <li class="nav-item">
-          <a class="nav-link btn" href="/" role="button">Demande de stage</a>
+          <a class="nav-link btn" href="{{ route('ajouter-demande') }}" role="button">Demande de stage</a>
         </li>
         <li>
           <a class="nav-link btn" href="{{ route('rendu-stage') }}" role="button">Autres soumissions</a>

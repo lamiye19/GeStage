@@ -41,15 +41,17 @@
                     <div class="form-group">
                         <label for="">Specialite</label>
                         <input type="text" class="form-control" required name="specialite"
-                            placeholder="Expert comptable">
+                            placeholder="Expert comptable" value="{{ old('specialite') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Nom</label>
-                        <input type="text" class="form-control" required name="nom" placeholder="Votre nom">
+                        <input type="text" class="form-control" required name="nom" placeholder="Votre nom"
+                        value="{{ old('nom') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Prenom</label>
-                        <input type="text" class="form-control" required name="prenom" placeholder="Votre prenom">
+                        <input type="text" class="form-control" required name="prenom" placeholder="Votre prenom"
+                        value="{{ old('prenom') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Sexe</label><br />
@@ -58,26 +60,33 @@
                     </div>
                     <div class="form-group">
                         <label for="">Ecole / Centre de formation de provenance</label>
-                        <input type="text" class="form-control" required name="ecole" placeholder="Votre prenom">
+                        <input type="text" class="form-control" required name="ecole" placeholder="Votre prenom"
+                        value="{{ old('ecole') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Date de naissance</label>
-                        <input type="date" class="form-control" required name="dateNais">
+                        <input type="date" class="form-control" required max="{{ date('Y',strtotime(now()))-18 }}-12-31" 
+                            name="dateNais" value="{{ old('dateNais') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Email</label>
-                        <input type="email" class="form-control" required name="email"
-                            placeholder="Votre email de contact">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" required name="email" placeholder="Votre email de contact" 
+                        pattern="[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex: test@gmail.com" value="{{ old('email') }}">
+                        @error('email')
+            <span class="invalid-feedback" role="alert">
+              <strong>Vous avez déja soummis une demande de stage avec cet email.</strong>
+            </span>
+            @enderror
                     </div>
                     <div class="form-group">
-                        <label for="">Telephone</label>
-                        <input type="tel" class="form-control" required name="tel"
-                            placeholder="Votre téléphone de contact">
+                        <label for="">Téléphone</label>
+                        <input type="tel" class="form-control" required name="tel" placeholder="Ex:90064578" 
+                        pattern="[79]{1}[01236789]{1}[0-9]{6}" title="Veuillez entrer un numéro de téléphone valide" value="{{ old('tel') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Adresse</label>
                         <input type="text" class="form-control" required name="adr"
-                            placeholder="Votre adresse de contact">
+                            placeholder="Votre adresse de contact" value="{{ old('adr') }}">
                     </div>
                 </div>
             </div>
@@ -95,30 +104,30 @@
                         <div class="mt-3">
                             <div class="input-group">
                                 <input type="number" class="form-control col-4" required name="pDate1"
-                                    placeholder="2019" max="2021" min="2019"> &nbsp;
+                                    placeholder="2017" max="2021" min="2017" value="{{ old('pDate1') }}"> &nbsp;
                                 <input type="text" class="form-control" required name="pTitre1"
-                                    placeholder="Master en Economie">
+                                    placeholder="Master en Economie" value="{{ old('pTitre') }}">
                             </div>
                             <input type="text" class="form-control mt-1" required name="p1"
-                                placeholder="Institut international du marketing">
+                                placeholder="Institut international du marketing" value="{{ old('p1') }}">
                         </div>
                         <div class="mt-3">
                             <div class="input-group">
                                 <input type="number" class="form-control col-4" required name="pDate2"
-                                    placeholder="2019" max="2021" min="2019"> &nbsp;
+                                    placeholder="2017" max="2021" min="2017" value="{{ old('pDate2') }}"> &nbsp;
                                 <input type="text" class="form-control" required name="pTitre2"
-                                    placeholder="Master en Economie">
+                                    placeholder="Master en Economie" value="{{ old('pTitre2') }}">
                             </div>
                             <input type="text" class="form-control mt-1" required name="p2"
-                                placeholder="Institut international du marketing">
+                                placeholder="Institut international du marketing" value="{{ old('p2') }}">
                         </div>
                         <div class="mt-3">
                             <div class="input-group">
                                 <input type="number" class="form-control col-4" required name="pDate3"
-                                    placeholder="2019" max="2021" min="2019"> &nbsp;
-                                <input type="text" class="form-control" required name="pTitre3">
+                                    pattern="[79]{1}[01236789]{1}[0-9]{6}" max="2021" min="2017" value="{{ old('pDate3') }}"> &nbsp;
+                                <input type="text" class="form-control" required name="pTitre3" value="{{ old('pTitre3') }}">
                             </div>
-                            <input type="text" class="form-control mt-1" required name="p3">
+                            <input type="text" class="form-control mt-1" required name="p3" value="{{ old('p3') }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -126,43 +135,44 @@
                         <small class="text-muted">Donnez vos trois dernières expériences</small> <br>
                         <div class="mt-3">
                             <div class="input-group">
-                                <input type="month" class="form-control col-4" required name="expDate1"
-                                    placeholder="juin 2002 - Aout 2004"> &nbsp;
-                                <input type="text" class="form-control" required name="expTitre1" placeholder="Poste">
+                                <input type="text" class="form-control col-4" required name="expDate1"
+                                    placeholder="juin 2002 - Aout 2004" value="{{ old('expDate1') }}"> &nbsp;
+                                <input type="text" class="form-control" required name="expTitre1" placeholder="Poste" value="{{ old('expTitre1') }}">
                             </div>
-                            <input class="col-12 mt-1" placeholder="Description du poste" name="exp1" required>
+                            <input class="col-12 mt-1" placeholder="Description du poste" name="exp1" required value="{{ old('exp1') }}">
                         </div>
                         <div class="mt-3">
                             <div class="input-group">
-                                <input type="month" class="form-control col-4" required name="expDate2"
-                                    placeholder="juin 2002 - Aout 2004"> &nbsp;
-                                <input type="text" class="form-control" required name="expTitre2" placeholder="Poste">
+                                <input type="text" class="form-control col-4" required name="expDate2"
+                                    placeholder="juin 2002 - Aout 2004" value="{{ old('expDate2') }}"> &nbsp;
+                                <input type="text" class="form-control" required name="expTitre2" placeholder="Poste" value="{{ old('expTitre2') }}">
                             </div>
-                            <input class="col-12 mt-1" placeholder="Description du poste" name="exp2" required>
+                            <input class="col-12 mt-1" placeholder="Description du poste" name="exp2" required value="{{ old('exp2') }}">
                         </div>
                         <div class="mt-3">
                             <div class="input-group">
-                                <input type="month" class="form-control col-4" required name="expDate3"
-                                    placeholder="juin 2002 - Aout 2004"> &nbsp;
-                                <input type="text" class="form-control" required name="expTitre3">
+                                <input type="text" class="form-control col-4" required name="expDate3"
+                                    placeholder="juin 2002 - Aout 2004" value="{{ old('expDate3') }}"> &nbsp;
+                                <input type="text" class="form-control" required name="expTitre3" value="{{ old('expTitre3') }}">
                             </div>
-                            <input class="col-12 mt-1" name="exp3" required>
+                            <input class="col-12 mt-1" name="exp3" required value="{{ old('exp3') }}">
                         </div>
                     </div>
                     <small class="text-muted">Veuillez séparer les éléments par des virgules</small> <br>
                     <div class="form-group mt-3">
                         <label for="">Compétences</label>
                         <input type="text" class="form-control" required name="competences"
-                            placeholder="Compétence 1, Compétence 2...">
+                            placeholder="Compétence 1, Compétence 2..." value="{{ old('competences') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Langues</label>
                         <input type="text" class="form-control" required name="langues"
-                            placeholder="Français, Anglais...">
+                            placeholder="Français, Anglais..." value="{{ old('langues') }}">
                     </div>
                     <div class="form-group">
                         <label for="">Centres d'interêt</label>
-                        <input type="text" class="form-control" required name="hobbies" placeholder="Sport, lecture...">
+                        <input type="text" class="form-control" required name="hobbies" 
+                            placeholder="Sport, lecture..." value="{{ old('hobbies') }}">
                     </div>
                 </div>
             </div>

@@ -28,32 +28,33 @@ Ajouter un maitre de stage
       <div class="card-body">
         <div class="row">
           <div class="form-group col-md-6">
-          <label for="">Nom</label>
-            <input type="text" class="form-control" id="" name="nom">
-        </div>
+            <label for="">Nom</label>
+            <input type="text" class="form-control" required name="nom" value="{{ old('nom') }}">
+          </div>
 
-        <div class="form-group col-md-6">
-          <label for="">Prenom</label>
-          <input type="text" class="form-control" id="" name="prenom">
-        </div>
-        <div class="form-group col-8">
-          <label for="">Date de naissance</label>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fas fa-calendar-alt"></i>
-              </span>
+          <div class="form-group col-md-6">
+            <label for="">Prenom</label>
+            <input type="text" class="form-control" required name="prenom" value="{{ old('prenom') }}">
+          </div>
+          <div class="form-group col-8">
+            <label for="">Date de naissance</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">
+                  <i class="fas fa-calendar-alt"></i>
+                </span>
+              </div>
+              <input type="date" class="form-control" required max="{{ date('Y',strtotime(now()))-25 }}-12-31"
+                name="dateNais" value="{{ old('dateNais') }}">
             </div>
-            <input type="date" class="form-control" id="" name="dateNais">
+          </div>
+          <div class="form-group col-4 text-center">
+            <label for="">Sexe</label><br />
+            <input type="radio" class="" id="" name="sexe" value="F"> F
+            <input type="radio" class="" id="" name="sexe" value="M"> M
           </div>
         </div>
-        <div class="form-group col-4 text-center">
-          <label for="">Sexe</label><br />
-          <input type="radio" class="" id="" name="sexe" value="F"> F
-          <input type="radio" class="" id="" name="sexe" value="M"> M
-        </div>
-        </div>
-        
+
         <div class="form-group">
           <label for="">Adresse Email</label>
           <div class="input-group">
@@ -62,18 +63,26 @@ Ajouter un maitre de stage
                 <i class="fas fa-envelope"></i>
               </span>
             </div>
-            <input type="email" class="form-control" id="" name="email">
+            <input type="email" class="form-control @error('email') is-invalid @enderror" required name="email"
+              pattern="[A-Za-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ex: test@gmail.com" value="{{ old('email') }}">
+            @error('email')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
           </div>
         </div>
         <div class="form-group">
-          <label for="">Telephone</label>
+          <label for="">Téléphone</label>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">
                 <i class="fas fa-phone"></i>
               </span>
             </div>
-            <input type="tel" class="form-control" id="" name="tel">
+            <input type="tel" class="form-control" required name="tel" placeholder="Ex:90064578"
+              pattern="[79]{1}[01236789]{1}[0-9]{6}" title="Veuillez entrer un numéro de téléphone valide"
+              value="{{ old('tel') }}">
           </div>
         </div>
         <div class="form-group">
@@ -84,7 +93,7 @@ Ajouter un maitre de stage
                 <i class="fas fa-building"></i>
               </span>
             </div>
-            <input type="text" class="form-control" id="" name="adr" placeholder="">
+            <input type="text" class="form-control" id="" name="adr" value="{{ old('adr') }}">
           </div>
         </div>
         <div class="form-group">
@@ -95,7 +104,7 @@ Ajouter un maitre de stage
                 <i class="fas fa-user-tag"></i>
               </span>
             </div>
-            <input type="text" class="form-control" id="" name="poste" placeholder="">
+            <input type="text" class="form-control" id="" name="poste" value="{{ old('poste') }}">
           </div>
         </div>
 

@@ -51,7 +51,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $test = Maitre::where('email', '=', $data['email'])->get();
+        /* $test = Maitre::where('email', '=', $data['email'])->get();
         if (empty($test[0])) {
             return Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
@@ -59,10 +59,10 @@ class RegisterController extends Controller
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]);
         } 
-        $test = $test[0];
+        $test = $test[0]; */
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'exists:maitres,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }

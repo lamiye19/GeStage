@@ -40,8 +40,8 @@
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>Ce compte existe déjà!</strong>
-                                        {{-- <strong>{{ $message }}</strong> --}}
+                                        {{-- <strong>Ce compte existe déjà!</strong> --}}
+                                        <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                                 <input id="emailError" type="hidden" class="form-control @error('emailError') is-invalid @enderror" name="emailError">

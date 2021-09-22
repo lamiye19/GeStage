@@ -18,6 +18,7 @@ class StatistiqueController extends Controller
 
         view()->share('stages', $stages);
         $pdf = PDF::loadView('statistiques.stagiaire', $stages);
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->download("stages-S-" . $demande[0]->stagiaire->nom . "_" . $demande[0]->stagiaire->prenom . ".pdf");
     }
 
@@ -29,6 +30,7 @@ class StatistiqueController extends Controller
 
         view()->share('stages', $stages);
         $pdf = PDF::loadView('statistiques.maitre', $stages);
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->download("stages-M-" . $maitre[0]->nom . "_" . $maitre[0]->prenom . ".pdf");
     }
 
@@ -40,6 +42,7 @@ class StatistiqueController extends Controller
 
         view()->share('stages', $stages);
         $pdf = PDF::loadView('statistiques.service', $stages);
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->download("stages-service_" . $service[0]->lib . ".pdf");
     }
 

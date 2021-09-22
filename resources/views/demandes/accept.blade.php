@@ -5,7 +5,7 @@ Informations du stage
 @endsection
 
 @section("contenu")
-<div class="row d-flex justify-content-end" style="font-size: 0.85em;">  
+<div class="row d-flex justify-content-end" style="font-size: 0.85em;">
   @if (Session()->has("createSuccess"))
   <div class="card col-md-4">
     <div class="card-header d-flex justify-content-arround">
@@ -23,34 +23,44 @@ Informations du stage
   @endif
 </div>
 <div class="row d-flex justify-content-center">
-    <div class="card col-md-8">
-      @isset($demande)
-      <form method='post' action="{{route('stage.create')}}">
-        @else
+  <div class="card col-md-8">
+    @isset($demande)
+    <form method='post' action="{{route('stage.create')}}">
+      @else
       <form method='post' action="{{route('stageRenew.create', ['renew' => $renew->id])}}">
         @endisset
         <div class="card-body">
           @csrf
-          
+
           <div class="form-group">
             <label for="">Titre</label>
-            <input type="text" class="form-control" id="" name="titreStage">
+            <input type="text" class="form-control" required name="titreStage" value="{{ old('titreStage') }}">
           </div>
           <div class="form-group">
             <label for="">Thème</label>
-            <input type="text" class="form-control" id="" name="theme">
+            <input type="text" class="form-control" required name="theme" value="{{ old('theme') }}">
           </div>
           <div class="form-group">
             <label for="">Date de début</label>
-            <input type="date" class="form-control" id="" name="debut" min="{{ date(now()) }} ">
+            <input type="date" class="form-control @error('debut') is-invalid @enderror" required name="debut" value="{{ old('debut') }}">
+            @error('debut')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
           </div>
           <div class="form-group">
             <label for="">Date de fin</label>
-            <input type="date" class="form-control" id="" name="fin">
+            <input type="date" class="form-control @error('fin') is-invalid @enderror" required name="fin" value="{{ old('fin') }}">
+            @error('fin')
+            <span class="invalid-feedback" role="alert">
+              <strong>{{ $message }}</strong>
+            </span>
+            @enderror
           </div>
           <div class="form-group">
             <label for="">Maitre de Stage</label>
-            <select class="form-control" id="" name="maitre_id">
+            <select class="form-control" required name="maitre_id" value="{{ old('maitre_id') }}">
               <option value=""></option>
               @foreach ($maitres as $maitre)
               <option value="{{$maitre->id}}">{{$maitre->nom}} {{$maitre->prenom}}</option>
@@ -59,7 +69,7 @@ Informations du stage
           </div>
           <div class="form-group">
             <label for="">Service</label>
-            <select class="form-control" id="" name="service_id">
+            <select class="form-control" required name="service_id" value="{{ old('service_id') }}">
               <option value=""></option>
               @foreach ($services as $sce)
               <option value="{{$sce->id}}">{{$sce->lib}}</option>
@@ -68,9 +78,9 @@ Informations du stage
           </div>
           <div class="form-group">
             @isset($demande)
-            <input type="hidden" class="form-control" id="" name="demande_id" value="{{ $demande->id }}">
-              @else
-            <input type="hidden" class="form-control" id="" name="demande_id" value="{{ $renew->demande->id }}">
+            <input type="hidden" class="form-control" required name="demande_id" value="{{ $demande->id }}">
+            @else
+            <input type="hidden" class="form-control" required name="demande_id" value="{{ $renew->demande->id }}">
             @endisset
           </div>
         </div>
@@ -90,7 +100,7 @@ Informations du stage
           </div>
         </div>
       </form>
-    <!-- /.card -->
+      <!-- /.card -->
   </div>
 </div>
 </div>

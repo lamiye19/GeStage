@@ -99,7 +99,7 @@ return [
     'password' => 'le mot de passe est incorrecte.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'le format :attribute est invalide.',
-    'required' => 'Le champs :attribute est obligatoire',
+    'required' => 'Ce champs est obligatoire',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -156,20 +156,20 @@ return [
 
 
     'custom' => [
-        'nom' => [
-            'required' => 'Le champs nom est obligatoire',
-        ],
-        'prenom' => [
-            'required' => 'Le champs prenom est obligatoire',
-        ],
-        'lib' => [
-            'required' => 'Le champs libellé est obligatoire',
-        ],
-        'directeur' => [
-            'required' => 'Le champs directeur est obligatoire',
-        ],
-        'emailError' => [
+        /* 'emailError' => [
             'required' => "Veuillez utiliser votre email d'enregistrement en tant que maître de stage",
+        ], */
+
+        'email' => [
+            'unique' => 'L\'email est déjà utilisé.',
+            'exists' => 'Cet email n\'exixte pas dans nos sauvegardes'
+        ],
+
+        'debut' => [
+            'after' => 'La date de début doit être une date à partir d\'aujourd\'hui',
+        ],
+        'fin' => [
+            'after' => 'Le stage doit durer au moins un mois',
         ],
 ],
 ];
