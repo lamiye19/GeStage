@@ -11,7 +11,7 @@ Ajouter un service
   <div class="card col-md-4">
     <div class="card-header d-flex justify-content-arround">
       <strong class="mr-auto text-success">Création</strong>
-      <small class="text-end"> {{ date('h:m:s') }} </small>
+      <small class="text-end"> {{ date('H:m:s') }} </small>
       <div class="card-tools">
         <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
         </button>

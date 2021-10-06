@@ -48,14 +48,13 @@ class rdvController extends Controller
         //'email' => "omolola0119@gmail.com",
         $leMail = [
             'name' => $rdv->demande->stagiaire->nom . ' ' . $rdv->demande->stagiaire->prenom,
-            //'email' => $rdv->demande->stagiaire->email,
-            'email' => "omolola0119@gmail.com",
+            'email' => $rdv->demande->stagiaire->email,
             'subject' => "Reprise de rendez-vous",
             'message' => "<p>Nous vous proposons un autre rendez-vous
                 avec le directeur des ressources humaines le <strong>" . date('d/m/Y', strtotime($request->dateHeure)) .
-                "</strong> à <strong>" . date('h:m', strtotime($request->dateHeure)) . "</strong> dans nos locaux.</p>
+                "</strong> à <strong>" . date('H:m', strtotime($request->dateHeure)) . "</strong> dans nos locaux.</p>
                 <p>Nous vous prions de bien vouloir nous confirmer votre présence à ce rendez-vous en utilisant ce 
-                <a href=\"http://127.0.0.1:8000/confirmation/$rdv->id]) }}\">lien</a>.</p>
+                <a href=\"http://127.0.0.1:8000/confirmation/$rdv->id\">lien</a>.</p>
                 "
         ];
 

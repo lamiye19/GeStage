@@ -32,7 +32,7 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('omolola0119@gmail.com')
+        return $this->from($address = 'gestage.dev@gmail.com', $name = config('app.name', 'GeStage'))
         ->subject($this->data['subject'])
         ->view('mail.mailling');
     }

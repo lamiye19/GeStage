@@ -1,5 +1,9 @@
 @extends('layout.index')
 
+@section('headTitle')
+Demande de stage
+@endsection
+
 {{-- <div id="toastsContainerTopRight" class="toasts-top-right fixed">
     <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header"><i class="mr-2 fas fa-envelope fa-lg"></i><strong class="mr-auto">Toast
@@ -19,7 +23,7 @@
         <div class="card col-md-12">
             <div class="card-header d-flex justify-content-arround">
                 <strong class="mr-auto text-success">Création</strong>
-                <small class="text-end"> {{ date('h:m:s') }} </small>
+                <small class="text-end"> {{ date('H:m:s') }} </small>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
                     </button>

@@ -12,6 +12,7 @@ use App\Models\Stagiaire;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class StageController extends Controller
 {
@@ -78,7 +79,7 @@ class StageController extends Controller
             'name' => $stage->demande->stagiaire->nom . ' ' . $stage->demande->stagiaire->prenom,
             'email' => $stage->demande->stagiaire->email,
             'subject' => "Confirmation de stage",
-            'message' => '<p>Votre demande de stage à Pal Service en tant que "' . $stage->demande->specialite . '" été acceptée. </p>
+            'message' => '<p>Votre demande de stage à Pal Service en tant que stagiaire "' . $stage->demande->specialite . '" été acceptée. </p>
                 <p>Voici les informations par rapports à votre stage:</p>
                 <ul>
                     <li> Poste : ' . $stage->titreStage . '</li>
@@ -113,7 +114,6 @@ class StageController extends Controller
             $demande->statut = 'accept';
             $demande->update();
         }
-        return back()->with("createSuccess", "Le stage est ajouté avec succèss");
         return redirect()->to(route('stages'));
     }
 
@@ -269,6 +269,16 @@ class StageController extends Controller
             ->send(new SendEmail($data));
 
         return view('demandes.index');
+    }
+
+    function attestation(Stage $stage)
+    {
+
+        $stage = Stage::find($stage->id);
+        view()->share('stage', $stage);
+        $pdf = PDF::loadView('stages.attestation', $stage);
+        $pdf->setPaper('A4', 'landscape');
+        return $pdf->download("attestation-" . $stage->demande->stagiaire->nom . "_" . $stage->demande->stagiaire->prenom . ".pdf");
     }
 
     // La methode supprimer

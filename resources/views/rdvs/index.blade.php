@@ -82,7 +82,7 @@ Nos Rendez-vous
                                 <td>{{ $loop->index +1 }}</td>
                                 <td>{{ $rdv->demande->stagiaire->nom }} {{ $rdv->demande->stagiaire->prenom }}</td>
                                 <td> {{ date('d/m/Y', strtotime($rdv->dateHeure))}}</td>
-                                <td> {{ date('h:m', strtotime($rdv->dateHeure))}}</td>
+                                <td> {{ date('H:m', strtotime($rdv->dateHeure))}}</td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -110,7 +110,7 @@ Nos Rendez-vous
                                 <td>{{ $loop->index +1 }}</td>
                                 <td>{{ $rdv->demande->stagiaire->nom }} {{ $rdv->demande->stagiaire->prenom }}</td>
                                 <td> {{ date('d/m/Y', strtotime($rdv->dateHeure))}}</td>
-                                <td> {{ date('h:m', strtotime($rdv->dateHeure))}}</td>
+                                <td> {{ date('H:m', strtotime($rdv->dateHeure))}}</td>
                                 <td>{{ $rdv->message }}</td>
                                 <th>
                                     <form id="rdv-{{$rdv->id}}"
@@ -161,7 +161,7 @@ Nos Rendez-vous
                                     {{ $rdv->demande->stagiaire->prenom }}
                                 </td>
                                 <td> {{ date('d/m/Y', strtotime($rdv->dateHeure))}}</td>
-                                <td> {{ date('h:m', strtotime($rdv->dateHeure))}}</td>
+                                <td> {{ date('H:m', strtotime($rdv->dateHeure))}}</td>
                                 <th>
                                     <a href="https://calendar.google.com/calendar/u/0/r/eventedit?text=Entretien+:+{{$rdv->demande->stagiaire->nom}}+{{ $rdv->demande->stagiaire->prenom }}&dates={{$date}}/{{$date}}&ctz=Africa/Abidjan"
                                         class="btn btn-success">

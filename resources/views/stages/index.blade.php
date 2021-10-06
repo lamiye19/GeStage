@@ -10,7 +10,7 @@ Liste des stages
   <div class="card col-md-5">
       <div class="card-header d-flex justify-content-arround">
           <strong class="mr-auto text-warning">Modification</strong>
-          <small class="text-end"> {{ date('h:m:s') }} </small>
+          <small class="text-end"> {{ date('H:m:s') }} </small>
           <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
               </button>
@@ -108,8 +108,11 @@ Liste des stages
             &nbsp;/&nbsp;
             <a href="/storage/{{ $stage->renduDoc }}">
               <i class="fa fa-file-pdf text-danger"></i>
+            </a><br>
+            <a href="{{ route('attestation', ['stage' => $stage->id]) }}">
+              Attestation
             </a>
-            @endif
+            @endif 
           </th>
         </tr>
         @endforeach

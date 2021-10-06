@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/maitre-stagiaire/maitre', ['App\Http\Controllers\StatistiqueController', "maitreStagiaire"])->name("maitre-stagiaire");
             Route::post('/show/-service/maitre/service', ['App\Http\Controllers\StatistiqueController', "serviceStagiaire"])->name("maitre-service-stagiaire");
         });
+        Route::get('/attestation/{stage}', [StageController::class, "attestation"])->name("attestation");
         Route::get('/consulter/{demande}', [DemandeController::class, "consulter"])->name("consulter-demande");
     });
 });

@@ -10,7 +10,7 @@ Liste des renouvellements
     <div class="card col-md-5">
         <div class="card-header d-flex justify-content-arround">
             <strong class="mr-auto text-warning">Modification</strong>
-            <small class="text-end"> {{ date('h:m:s') }} </small>
+            <small class="text-end"> {{ date('H:m:s') }} </small>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
                 </button>
@@ -88,7 +88,7 @@ Liste des renouvellements
                                 <td>{{ $loop->index +1 }}</td>
                                 <td>{{ $renew->demande->stagiaire->nom }} {{ $renew->demande->stagiaire->prenom }}</td>
                                 <td>{{ $renew->demande->specialite }}</td>
-                                <td> {{ date('d/m/Y à h:m:s', strtotime($renew->created_at))}}</td>
+                                <td> {{ date('d/m/Y à H:m:s', strtotime($renew->created_at))}}</td>
                                 <th>
                                     <a href="{{ route('consulter-demande', ['demande'=> $renew->demande->id]) }}"
                                         target="_blank">Consulter</a>
@@ -131,8 +131,8 @@ Liste des renouvellements
                                 <td>{{ $renew->demande->stagiaire->nom }}
                                     {{ $renew->demande->stagiaire->prenom }}</td>
                                 <td>{{ $renew->demande->specialite }}</td>
-                                <td> {{ date('d/m/Y à h:m:s', strtotime($renew->created_at))}}</td>
-                                <td> {{ date('d/m/Y à h:m:s', strtotime($renew->updated_at))}}</td>
+                                <td> {{ date('d/m/Y à H:m:s', strtotime($renew->created_at))}}</td>
+                                <td> {{ date('d/m/Y à H:m:s', strtotime($renew->updated_at))}}</td>
                                 <th>
                                     <a href="{{ route('consulter-demande', ['demande' => $renew->demande->id]) }}"
                                         target="_blank">Consulter</a>
@@ -171,8 +171,8 @@ Liste des renouvellements
                                 <td>{{ $renew->demande->stagiaire->nom }}
                                     {{ $renew->demande->stagiaire->prenom }}</td>
                                 <td>{{ $renew->demande->specialite }}</td>
-                                <td> {{ date('d/m/Y à h:m:s', strtotime($renew->created_at))}}</td>
-                                <td> {{ date('d/m/Y à h:m:s', strtotime($renew->updated_at))}}</td>
+                                <td> {{ date('d/m/Y à H:m:s', strtotime($renew->created_at))}}</td>
+                                <td> {{ date('d/m/Y à H:m:s', strtotime($renew->updated_at))}}</td>
                                 <th>
                                     <a href="{{ route('consulter-demande', ['demande'=>$renew->demande->id]) }}"
                                         target="_blank">Consulter</a>

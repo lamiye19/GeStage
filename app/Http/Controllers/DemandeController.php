@@ -168,12 +168,12 @@ class DemandeController extends Controller
                 'name' => $demande->stagiaire->nom . ' ' . $demande->stagiaire->prenom,
                 'email' => $demande->stagiaire->email,
                 'subject' => "Convocation à un entretien",
-                'message' => "<p>Votre candidature au poste de ( stagiaire . $demande->specialite .) au sein de notre société a 
+                'message' => "<p>Votre candidature au poste de ( stagiaire $demande->specialite ) au sein de notre société a 
                     retenu notre attention et nous souhaiterons vous rencontrer. Nous vous proposons un entretien 
                     avec le directeur des ressources humaines le <strong>" . date('d/m/Y', strtotime($request->dateHeure)) .
-                    "</strong> à <strong>" . date('h:m', strtotime($request->dateHeure)) . "</strong> dans nos locaux.</p>
+                    "</strong> à <strong>" . date('H:m', strtotime($request->dateHeure)) . "</strong> dans nos locaux.</p>
                     <p>Nous vous prions de bien vouloir nous confirmer votre présence à ce rendez-vous en utilisant ce 
-                    <a href=\"http://127.0.0.1:8000/confirmation/$rdv->id]) }}\">lien</a>.</p>
+                    <a href=\"http://127.0.0.1:8000/confirmation/$rdv->id\">lien</a>.</p>
                     "
             ];
 
